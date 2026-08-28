@@ -1,0 +1,71 @@
+function(_recipe_GLEW_system)
+  if(NOT CMAKE_CROSSCOMPILING)
+    if(CL_REQ_VERSION)
+      find_package(GLEW ${CL_REQ_VERSION} QUIET)
+    else()
+      find_package(GLEW QUIET)
+    endif()
+    if(TARGET GLEW::GLEW)
+      return()
+    endif()
+  endif()
+
+  cl_format_pkgconfig_req("glew" "${CL_VERSION_REQ}" PKG_SPEC)
+  find_package(PkgConfig QUIET)
+  if(PkgConfig_FOUND)
+    if(CL_STATIC)
+      pkg_check_modules(GLEW IMPORTED_TARGET GLOBAL "--static" ${PKG_SPEC})
+    else()
+      pkg_check_modules(GLEW IMPORTED_TARGET GLOBAL ${PKG_SPEC})
+    endif()
+  endif()
+endfunction()
+
+function(_recipe_GLEW_package)
+  if(CL_REQUIRE_STATIC) # Most package managers don't provide static libs.
+    return()
+  endif()
+
+  if(CL_PACKAGE_MANAGER STREQUAL "apt")
+    set(CL_PACKAGE_NAME "libglew-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+    set(CL_PACKAGE_NAME "glew" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
+    set(CL_PACKAGE_NAME "glew" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "yum")
+    set(CL_PACKAGE_NAME "glew-devel" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "apk")
+    set(CL_PACKAGE_NAME "glew-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "zypper")
+    set(CL_PACKAGE_NAME "glew-devel" PARENT_SCOPE)
+  endif()
+endfunction()
+
+function(_recipe_GLEW_source)
+  set(GLEW_TAG "glew-2.3.1")
+  if(CL_REQ_VERSION)
+    set(GLEW_TAG "glew-${CL_REQ_VERSION}")
+  endif()
+
+  cl_import_source(
+    NAME GLEW
+    DOWNLOAD_ONLY
+    URL https://github.com/nigels-com/glew/releases/download/${GLEW_TAG}/${GLEW_TAG}.tgz
+  )
+
+  if(NOT EXISTS "${CL_SOURCE_DIR}/build/cmake/CMakeLists.txt")
+    _catalog_log(FATAL_ERROR "GLEW: expected build/cmake/CMakeLists.txt not found under ${CL_SOURCE_DIR}")
+  endif()
+
+  add_subdirectory("${CL_SOURCE_DIR}/build/cmake" "${CL_SOURCE_DIR}-build")
+
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    if(TARGET glew_s)
+      add_library(deps::GLEW ALIAS glew_s)
+    endif()
+  elseif(TARGET glew)
+    add_library(deps::GLEW ALIAS glew)
+  elseif(TARGET glew_s)
+    add_library(deps::GLEW ALIAS glew_s)
+  endif()
+endfunction()

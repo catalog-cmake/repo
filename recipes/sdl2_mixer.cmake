@@ -1,0 +1,66 @@
+function(_recipe_SDL2_mixer_toolchain)
+  if(EMSCRIPTEN)
+    add_library(SDL2_mixer INTERFACE)
+    target_compile_options(SDL2_mixer INTERFACE "-sUSE_SDL_MIXER=2")
+    target_link_options(SDL2_mixer INTERFACE "-sUSE_SDL_MIXER=2")
+  endif()
+endfunction()
+
+function(_recipe_SDL2_mixer_system)
+  cl_format_pkgconfig_req("SDL2_mixer" "${CL_VERSION_REQ}" PKG_SPEC)
+
+  if(CL_STATIC)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+      pkg_check_modules(SDL2_mixer IMPORTED_TARGET GLOBAL "--static" ${PKG_SPEC})
+    endif()
+  else()
+    if(NOT CMAKE_CROSSCOMPILING)
+      if(CL_REQ_VERSION)
+        find_package(SDL2_mixer ${CL_REQ_VERSION} QUIET)
+      else()
+        find_package(SDL2_mixer QUIET)
+      endif()
+    endif()
+
+    if(NOT TARGET SDL2_mixer AND NOT TARGET SDL2_mixer::SDL2_mixer)
+      find_package(PkgConfig QUIET)
+      if(PkgConfig_FOUND)
+        pkg_check_modules(SDL2_mixer IMPORTED_TARGET GLOBAL ${PKG_SPEC})
+      endif()
+    endif()
+  endif()
+endfunction()
+
+function(_recipe_SDL2_mixer_package)
+  if(CL_REQUIRE_STATIC) # Most package managers don't provide static libs.
+    return()
+  endif()
+
+  if(CL_PACKAGE_MANAGER STREQUAL "apt")
+    set(CL_PACKAGE_NAME "libsdl2-mixer-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+    set(CL_PACKAGE_NAME "sdl2_mixer" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
+    set(CL_PACKAGE_NAME "sdl2_mixer" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "yum")
+    set(CL_PACKAGE_NAME "SDL2_mixer-devel" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "apk")
+    set(CL_PACKAGE_NAME "sdl2_mixer-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "zypper")
+    set(CL_PACKAGE_NAME "libSDL2_mixer-devel" PARENT_SCOPE)
+  endif()
+endfunction()
+
+function(_recipe_SDL2_mixer_source)
+  set(SDL2MIXER_TAG "release-2.8.2")
+  if(CL_REQ_VERSION)
+    set(SDL2MIXER_TAG "release-${CL_REQ_VERSION}")
+  endif()
+
+  cl_import_source(
+    NAME SDL2_mixer
+    URL https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/${SDL2MIXER_TAG}.tar.gz
+    OPTIONS "SDL2MIXER_VENDORED" "ON" "SDL2MIXER_SAMPLES" "OFF"
+  )
+endfunction()

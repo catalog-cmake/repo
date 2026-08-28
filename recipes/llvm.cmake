@@ -1,0 +1,31 @@
+function(_recipe_LLVM_system)
+  if(CL_REQ_VERSION)
+    find_package(LLVM ${CL_REQ_VERSION} CONFIG QUIET)
+  else()
+    find_package(LLVM CONFIG QUIET)
+  endif()
+
+  if(NOT LLVM_FOUND)
+    return()
+  endif()
+
+  add_library(_deps_llvm_combined INTERFACE)
+  target_include_directories(_deps_llvm_combined INTERFACE "${LLVM_INCLUDE_DIRS}")
+  separate_arguments(_LLVM_DEFS NATIVE_COMMAND "${LLVM_DEFINITIONS}")
+  target_compile_definitions(_deps_llvm_combined INTERFACE ${_LLVM_DEFS})
+  llvm_map_components_to_libnames(_LLVM_LIBS all)
+  target_link_libraries(_deps_llvm_combined INTERFACE ${_LLVM_LIBS})
+  add_library(deps::LLVM ALIAS _deps_llvm_combined)
+endfunction()
+
+function(_recipe_LLVM_package)
+  if(CL_PACKAGE_MANAGER STREQUAL "apt")
+    set(CL_PACKAGE_NAME "llvm-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+    set(CL_PACKAGE_NAME "llvm" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
+    set(CL_PACKAGE_NAME "llvm" PARENT_SCOPE)
+  endif()
+endfunction()
+
+# Decided not to support source, it's too big

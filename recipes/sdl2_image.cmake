@@ -1,0 +1,66 @@
+function(_recipe_SDL2_image_toolchain)
+  if(EMSCRIPTEN)
+    add_library(SDL2_image INTERFACE)
+    target_compile_options(SDL2_image INTERFACE "-sUSE_SDL_IMAGE=2")
+    target_link_options(SDL2_image INTERFACE "-sUSE_SDL_IMAGE=2")
+  endif()
+endfunction()
+
+function(_recipe_SDL2_image_system)
+  cl_format_pkgconfig_req("SDL2_image" "${CL_VERSION_REQ}" PKG_SPEC)
+
+  if(CL_STATIC)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+      pkg_check_modules(SDL2_image IMPORTED_TARGET GLOBAL "--static" ${PKG_SPEC})
+    endif()
+  else()
+    if(NOT CMAKE_CROSSCOMPILING)
+      if(CL_REQ_VERSION)
+        find_package(SDL2_image ${CL_REQ_VERSION} QUIET)
+      else()
+        find_package(SDL2_image QUIET)
+      endif()
+    endif()
+
+    if(NOT TARGET SDL2_image AND NOT TARGET SDL2_image::SDL2_image)
+      find_package(PkgConfig QUIET)
+      if(PkgConfig_FOUND)
+        pkg_check_modules(SDL2_image IMPORTED_TARGET GLOBAL ${PKG_SPEC})
+      endif()
+    endif()
+  endif()
+endfunction()
+
+function(_recipe_SDL2_image_package)
+  if(CL_REQUIRE_STATIC) # Most package managers don't provide static libs.
+    return()
+  endif()
+
+  if(CL_PACKAGE_MANAGER STREQUAL "apt")
+    set(CL_PACKAGE_NAME "libsdl2-image-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+    set(CL_PACKAGE_NAME "sdl2_image" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
+    set(CL_PACKAGE_NAME "sdl2_image" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "yum")
+    set(CL_PACKAGE_NAME "SDL2_image-devel" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "apk")
+    set(CL_PACKAGE_NAME "sdl2_image-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "zypper")
+    set(CL_PACKAGE_NAME "libSDL2_image-devel" PARENT_SCOPE)
+  endif()
+endfunction()
+
+function(_recipe_SDL2_image_source)
+  set(SDL2IMAGE_TAG "release-2.8.12")
+  if(CL_REQ_VERSION)
+    set(SDL2IMAGE_TAG "release-${CL_REQ_VERSION}")
+  endif()
+
+  cl_import_source(
+    NAME SDL2_image
+    URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/${SDL2IMAGE_TAG}.tar.gz
+    OPTIONS "SDL2IMAGE_VENDORED" "ON" "SDL2IMAGE_SAMPLES" "OFF" "SDL2IMAGE_TESTS" "OFF"
+  )
+endfunction()
