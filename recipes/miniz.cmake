@@ -19,7 +19,7 @@ function(_recipe_miniz_package)
 endfunction()
 
 function(_recipe_miniz_source)
-  set(MINIZ_TAG "v114")
+  set(MINIZ_TAG "3.1.1")
   if(CL_REQ_VERSION)
     set(MINIZ_TAG "${CL_REQ_VERSION}")
   endif()
