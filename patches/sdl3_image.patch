@@ -1,0 +1,21 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1103,6 +1103,18 @@
+     elseif(SDLIMAGE_WEBP_SHARED AND DEFINED SDLIMAGE_DYNAMIC_WEBP AND EXISTS "${SDLIMAGE_DYNAMIC_WEBP}" AND DEFINED SDLIMAGE_DYNAMIC_WEBPDEMUX AND EXISTS "${SDLIMAGE_DYNAMIC_WEBPDEMUX}" AND DEFINED SDLIMAGE_DYNAMIC_WEBPMUX AND EXISTS "${SDLIMAGE_DYNAMIC_WEBPMUX}")
+         message(STATUS "${PROJECT_NAME}: Using libwebp from CMake variable")
+         set(SDLIMAGE_WEBP_ENABLED TRUE)
++    elseif(TARGET webp AND TARGET webpdemux AND TARGET libwebpmux)
++        if(NOT TARGET WebP::webp)
++            add_library(WebP::webp ALIAS webp)
++        endif()
++        if(NOT TARGET WebP::webpdemux)
++            add_library(WebP::webpdemux ALIAS webpdemux)
++        endif()
++        if(NOT TARGET WebP::libwebpmux)
++            add_library(WebP::libwebpmux ALIAS libwebpmux)
++        endif()
++        set(SDLIMAGE_WEBP_ENABLED TRUE)
++        message(STATUS "${PROJECT_NAME}: Using catalog libwebp")
+     else()
+         find_package(webp ${required})
+         if(webp_FOUND)

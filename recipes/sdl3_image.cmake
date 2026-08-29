@@ -1,3 +1,5 @@
+_catalog_set_var("SDL3IMAGE_RECIPE_DIR" "${CMAKE_CURRENT_LIST_DIR}")
+
 function(_recipe_SDL3_image_toolchain)
   if(EMSCRIPTEN)
     add_library(SDL3_image INTERFACE)
@@ -38,9 +40,14 @@ function(_recipe_SDL3_image_source)
     set(SDL3IMAGE_TAG "release-${CL_REQ_VERSION}")
   endif()
 
+  cl_add_dep(libwebp)
+
+  _catalog_get_var("SDL3IMAGE_RECIPE_DIR" SDL3IMAGE_RECIPE_DIR)
+
   cl_import_source(
     NAME SDL3_image
     URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/${SDL3IMAGE_TAG}.tar.gz
-    OPTIONS "SDLIMAGE_VENDORED" "ON" "SDLIMAGE_SAMPLES" "OFF" "SDLIMAGE_TESTS" "OFF"
+    OPTIONS "SDLIMAGE_VENDORED" "OFF" "SDLIMAGE_SAMPLES" "OFF" "SDLIMAGE_TESTS" "OFF" "SDLIMAGE_DEPS_SHARED" "OFF"
+    PATCHES "${SDL3IMAGE_RECIPE_DIR}/../patches/sdl3_image.patch"
   )
 endfunction()

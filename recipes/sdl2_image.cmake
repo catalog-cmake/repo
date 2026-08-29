@@ -1,3 +1,5 @@
+_catalog_set_var("SDL2IMAGE_RECIPE_DIR" "${CMAKE_CURRENT_LIST_DIR}")
+
 function(_recipe_SDL2_image_toolchain)
   if(EMSCRIPTEN)
     add_library(SDL2_image INTERFACE)
@@ -58,9 +60,14 @@ function(_recipe_SDL2_image_source)
     set(SDL2IMAGE_TAG "release-${CL_REQ_VERSION}")
   endif()
 
+  cl_add_dep(libwebp)
+
+  _catalog_get_var("SDL2IMAGE_RECIPE_DIR" SDL2IMAGE_RECIPE_DIR)
+
   cl_import_source(
     NAME SDL2_image
     URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/${SDL2IMAGE_TAG}.tar.gz
-    OPTIONS "SDL2IMAGE_VENDORED" "ON" "SDL2IMAGE_SAMPLES" "OFF" "SDL2IMAGE_TESTS" "OFF"
+    OPTIONS "SDL2IMAGE_VENDORED" "OFF" "SDL2IMAGE_SAMPLES" "OFF" "SDL2IMAGE_TESTS" "OFF" "SDL2IMAGE_DEPS_SHARED" "OFF"
+    PATCHES "${SDL2IMAGE_RECIPE_DIR}/../patches/sdl2_image.patch"
   )
 endfunction()

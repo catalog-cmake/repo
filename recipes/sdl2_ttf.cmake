@@ -1,3 +1,5 @@
+_catalog_set_var("SDL2TTF_RECIPE_DIR" "${CMAKE_CURRENT_LIST_DIR}")
+
 function(_recipe_SDL2_ttf_toolchain)
   if(EMSCRIPTEN)
     add_library(SDL2_ttf INTERFACE)
@@ -58,9 +60,15 @@ function(_recipe_SDL2_ttf_source)
     set(SDL2TTF_TAG "release-${CL_REQ_VERSION}")
   endif()
 
+  cl_add_dep(freetype)
+  cl_add_dep(harfbuzz)
+
+  _catalog_get_var("SDL2TTF_RECIPE_DIR" SDL2TTF_RECIPE_DIR)
+
   cl_import_source(
     NAME SDL2_ttf
     URL https://github.com/libsdl-org/SDL_ttf/archive/refs/tags/${SDL2TTF_TAG}.tar.gz
-    OPTIONS "SDL2TTF_VENDORED" "ON" "SDL2TTF_SAMPLES" "OFF"
+    OPTIONS "SDL2TTF_VENDORED" "OFF" "SDL2TTF_SAMPLES" "OFF"
+    PATCHES "${SDL2TTF_RECIPE_DIR}/../patches/sdl2_ttf.patch"
   )
 endfunction()

@@ -1,0 +1,18 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -822,6 +822,15 @@
+         list(APPEND INSTALL_EXTRA_TARGETS webp webpdemux)
+         set_target_properties(webp PROPERTIES EXPORT_NAME "external_libwebp")
+         add_library(SDL2_image::external_libwebp ALIAS webp)
++    elseif(TARGET webp AND TARGET webpdemux)
++        if(NOT TARGET WebP::webp)
++            add_library(WebP::webp ALIAS webp)
++        endif()
++        if(NOT TARGET WebP::webpdemux)
++            add_library(WebP::webpdemux ALIAS webpdemux)
++        endif()
++        set(SDL2IMAGE_WEBP_ENABLED TRUE)
++        message(STATUS "${PROJECT_NAME}: Using catalog libwebp")
+     else()
+         find_package(webp ${required})
+         if(webp_FOUND)
