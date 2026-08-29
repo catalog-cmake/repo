@@ -1,5 +1,3 @@
-_catalog_set_var("SDL3TTF_RECIPE_DIR" "${CMAKE_CURRENT_LIST_DIR}")
-
 function(_recipe_SDL3_ttf_toolchain)
   if(EMSCRIPTEN)
     add_library(SDL3_ttf INTERFACE)
@@ -44,12 +42,12 @@ function(_recipe_SDL3_ttf_source)
 	cl_add_dep(freetype)
 	cl_add_dep(harfbuzz)
 
-  _catalog_get_var("SDL3TTF_RECIPE_DIR" SDL3TTF_RECIPE_DIR)
+  cl_repo_file(patches/sdl3_ttf.patch SDL3TTF_PATCH)
 
   cl_import_source(
 		NAME SDL3_ttf
 		URL "https://github.com/libsdl-org/SDL_ttf/archive/refs/tags/${SDL3TTF_TAG}.tar.gz"
 		OPTIONS "SDLTTF_HARFBUZZ_VENDORED" "OFF" "SDLTTF_FREETYPE_VENDORED" "OFF" "SDLTTF_PLUTOSVG_VENDORED" "OFF"
-		PATCHES "${SDL3TTF_RECIPE_DIR}/../patches/sdl3_ttf.patch"
+		PATCHES "${SDL3TTF_PATCH}"
 	)
 endfunction()

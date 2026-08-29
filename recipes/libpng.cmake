@@ -1,5 +1,3 @@
-_catalog_set_var("LIBPNG_RECIPE_DIR" "${CMAKE_CURRENT_LIST_DIR}")
-
 function(_recipe_libpng_system)
   if(NOT CMAKE_CROSSCOMPILING)
     if(CL_REQ_VERSION)
@@ -60,7 +58,7 @@ function(_recipe_libpng_source)
     set(PNG_BUILD_STATIC OFF)
   endif()
 
-  _catalog_get_var("LIBPNG_RECIPE_DIR" LIBPNG_RECIPE_DIR)
+  cl_repo_file(patches/libpng.patch LIBPNG_PATCH)
 
   cl_import_source(
     NAME libpng
@@ -70,7 +68,7 @@ function(_recipe_libpng_source)
       "PNG_STATIC" "${PNG_BUILD_STATIC}"
       "PNG_TESTS" "OFF"
       "PNG_TOOLS" "OFF"
-    PATCHES "${LIBPNG_RECIPE_DIR}/../patches/libpng.patch"
+    PATCHES "${LIBPNG_PATCH}"
   )
 
   if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
