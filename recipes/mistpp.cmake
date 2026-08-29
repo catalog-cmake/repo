@@ -13,7 +13,7 @@ function(_recipe_mistpp_source)
   cl_add_dep(libcurl)
   cl_add_dep(nlohmann_json)
 
-  set(MISTPP_TAG "v0.3.5")
+  set(MISTPP_TAG "v0.3.6")
   if(CL_REQ_VERSION)
     set(MISTPP_TAG "v${CL_REQ_VERSION}")
   endif()
