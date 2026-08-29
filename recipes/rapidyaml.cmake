@@ -33,6 +33,7 @@ function(_recipe_rapidyaml_source)
       "RYML_BUILD_BENCHMARKS" "OFF"
       "RYML_BUILD_TOOLS" "OFF"
       "RYML_SYSTEM_C4CORE" "OFF"
+      "RYML_INSTALL" "OFF"
   )
 
   if(TARGET ryml::ryml)
