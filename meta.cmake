@@ -61,6 +61,7 @@ set(CATALOG_RECIPES
   lz4:recipes/lz4.cmake
   brotli:recipes/brotli.cmake
   xz:recipes/xz.cmake
+  libarchive:recipes/libarchive.cmake
 
   openssl:recipes/openssl.cmake
   mbedtls:recipes/mbedtls.cmake
