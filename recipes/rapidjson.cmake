@@ -30,12 +30,16 @@ function(_recipe_rapidjson_source)
 
   cl_import_source(
     NAME rapidjson
+    DOWNLOAD_ONLY
     URL https://github.com/Tencent/rapidjson/archive/refs/tags/${RAPIDJSON_TAG}.tar.gz
-    OPTIONS
-      "RAPIDJSON_BUILD_DOC" "OFF"
-      "RAPIDJSON_BUILD_EXAMPLES" "OFF"
-      "RAPIDJSON_BUILD_TESTS" "OFF"
   )
+
+  if(NOT EXISTS "${CL_SOURCE_DIR}/include/rapidjson/rapidjson.h")
+    _catalog_log(FATAL_ERROR "rapidjson: rapidjson.h not found under ${CL_SOURCE_DIR}/include")
+  endif()
+
+  add_library(RapidJSON INTERFACE)
+  target_include_directories(RapidJSON INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}/include>)
 
   if(TARGET RapidJSON AND NOT TARGET deps::rapidjson)
     add_library(deps::rapidjson ALIAS RapidJSON)
