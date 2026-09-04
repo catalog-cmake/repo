@@ -69,4 +69,13 @@ function(_recipe_SDL2_ttf_source)
     OPTIONS "SDL2TTF_VENDORED" "OFF" "SDL2TTF_SAMPLES" "OFF"
     PATCHES "${SDL2TTF_PATCH}"
   )
+
+  if(TARGET SDL2_ttf AND EXISTS "${CL_SOURCE_DIR}/SDL_ttf.h")
+    set(SHIM_DIR "${CMAKE_BINARY_DIR}/_catalog_shims/SDL2_ttf")
+    file(MAKE_DIRECTORY "${SHIM_DIR}/SDL2")
+    if(NOT EXISTS "${SHIM_DIR}/SDL2/SDL_ttf.h")
+      file(CREATE_LINK "${CL_SOURCE_DIR}/SDL_ttf.h" "${SHIM_DIR}/SDL2/SDL_ttf.h" SYMBOLIC COPY_ON_ERROR)
+    endif()
+    target_include_directories(SDL2_ttf INTERFACE "${SHIM_DIR}")
+  endif()
 endfunction()
