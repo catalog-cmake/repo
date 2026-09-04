@@ -1,0 +1,17 @@
+--- a/CMakeLists.txt	2026-06-23 22:52:50.000000000 -0700
++++ b/CMakeLists.txt	2026-09-03 20:19:21.996065764 -0700
+@@ -881,7 +881,21 @@
+ endif()
+ 
+ if(CURL_USE_MBEDTLS)
+-  find_package(MbedTLS MODULE REQUIRED)
++  if(TARGET MbedTLS::mbedtls AND NOT TARGET CURL::mbedtls)
++    set(MBEDTLS_VERSION "4.2.0")
++    add_library(CURL::mbedtls INTERFACE IMPORTED)
++    target_link_libraries(CURL::mbedtls INTERFACE MbedTLS::mbedtls MbedTLS::mbedx509 TF-PSA-Crypto::tfpsacrypto)
++  else()
++    find_package(MbedTLS MODULE REQUIRED)
++  endif()
+   if(MBEDTLS_VERSION VERSION_LESS 3.2.0)
+     message(FATAL_ERROR "mbedTLS v3.2.0 or newer is required.")
+   endif()

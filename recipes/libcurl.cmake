@@ -68,9 +68,12 @@ function(_recipe_libcurl_source)
     set(CURL_BUILD_SHARED OFF)
   endif()
 
+  cl_repo_file(patches/libcurl.patch LIBCURL_PATCH)
+
   cl_import_source(
     NAME libcurl
     URL https://github.com/curl/curl/archive/refs/tags/${CURL_TAG}.tar.gz
+    PATCHES "${LIBCURL_PATCH}"
     OPTIONS
       "BUILD_SHARED_LIBS" "${CURL_BUILD_SHARED}"
       "BUILD_CURL_EXE" "OFF"
