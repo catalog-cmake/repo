@@ -1,0 +1,11 @@
+--- a/include/rapidjson/document.h	2016-08-25 00:59:05.000000000 -0700
++++ b/include/rapidjson/document.h	2026-09-03 18:19:42.538783129 -0700
+@@ -316,7 +316,7 @@
+ 
+     GenericStringRef(const GenericStringRef& rhs) : s(rhs.s), length(rhs.length) {}
+ 
+-    GenericStringRef& operator=(const GenericStringRef& rhs) { s = rhs.s; length = rhs.length; }
++    GenericStringRef& operator=(const GenericStringRef& rhs)/* = delete */;
+ 
+     //! implicit conversion to plain CharType pointer
+     operator const Ch *() const { return s; }

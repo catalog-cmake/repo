@@ -28,10 +28,13 @@ function(_recipe_rapidjson_source)
     set(RAPIDJSON_TAG "v${CL_REQ_VERSION}")
   endif()
 
+  cl_repo_file(patches/rapidjson.patch RAPIDJSON_PATCH)
+
   cl_import_source(
     NAME rapidjson
     DOWNLOAD_ONLY
     URL https://github.com/Tencent/rapidjson/archive/refs/tags/${RAPIDJSON_TAG}.tar.gz
+    PATCHES "${RAPIDJSON_PATCH}"
   )
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/include/rapidjson/rapidjson.h")
