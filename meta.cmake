@@ -36,6 +36,7 @@ set(CATALOG_RECIPES
   nlohmann_json:recipes/nlohmann_json.cmake
   rapidjson:recipes/rapidjson.cmake
   jsoncpp:recipes/jsoncpp.cmake
+  simdjson:recipes/simdjson.cmake
   yaml-cpp:recipes/yaml-cpp.cmake
   rapidyaml:recipes/rapidyaml.cmake
 
