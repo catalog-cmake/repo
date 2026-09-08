@@ -1,40 +1,6 @@
---- a/src/SFML/Graphics/CMakeLists.txt
-+++ b/src/SFML/Graphics/CMakeLists.txt
-@@ -109,8 +109,30 @@
- endif()
- 
- if(SFML_USE_SYSTEM_DEPS)
--    find_package(Freetype REQUIRED)
--    find_package(HarfBuzz REQUIRED)
-+    if(NOT TARGET Freetype::Freetype AND TARGET deps::freetype)
-+        set(_CATALOG_FREETYPE_TARGET deps::freetype)
-+        get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
-+        while(_CATALOG_FREETYPE_REAL)
-+            set(_CATALOG_FREETYPE_TARGET ${_CATALOG_FREETYPE_REAL})
-+            get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
-+        endwhile()
-+        add_library(Freetype::Freetype ALIAS ${_CATALOG_FREETYPE_TARGET})
-+    endif()
-+    if(NOT TARGET Freetype::Freetype)
-+        find_package(Freetype REQUIRED)
-+    endif()
-+    if(NOT TARGET HarfBuzz::HarfBuzz AND TARGET deps::harfbuzz)
-+        set(_CATALOG_HARFBUZZ_TARGET deps::harfbuzz)
-+        get_target_property(_CATALOG_HARFBUZZ_REAL ${_CATALOG_HARFBUZZ_TARGET} ALIASED_TARGET)
-+        while(_CATALOG_HARFBUZZ_REAL)
-+            set(_CATALOG_HARFBUZZ_TARGET ${_CATALOG_HARFBUZZ_REAL})
-+            get_target_property(_CATALOG_HARFBUZZ_REAL ${_CATALOG_HARFBUZZ_TARGET} ALIASED_TARGET)
-+        endwhile()
-+        add_library(HarfBuzz::HarfBuzz ALIAS ${_CATALOG_HARFBUZZ_TARGET})
-+    endif()
-+    if(NOT TARGET HarfBuzz::HarfBuzz)
-+        find_package(HarfBuzz REQUIRED)
-+    endif()
- else()
-     # use a block to scope option variables we have to set
-     block()
---- a/src/SFML/Audio/CMakeLists.txt
-+++ b/src/SFML/Audio/CMakeLists.txt
+diff -ru '--exclude=.git' a/src/SFML/Audio/CMakeLists.txt b/src/SFML/Audio/CMakeLists.txt
+--- a/src/SFML/Audio/CMakeLists.txt	2026-04-16 06:24:07.000000000 -0700
++++ b/src/SFML/Audio/CMakeLists.txt	2026-09-08 10:39:38.920118338 -0700
 @@ -69,8 +69,38 @@
  
  # find external libraries
@@ -75,4 +41,54 @@
 +    endif()
  else()
      # use an immediately invoked function to scope option variables we have to set
+     block()
+@@ -214,7 +244,12 @@
+ endif()
+ 
+ # miniaudio sources
+-target_include_directories(sfml-audio SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/miniaudio")
++if(TARGET deps::miniaudio)
++    get_target_property(_CATALOG_MINIAUDIO_INCLUDES deps::miniaudio INTERFACE_INCLUDE_DIRECTORIES)
++    target_include_directories(sfml-audio SYSTEM PRIVATE ${_CATALOG_MINIAUDIO_INCLUDES})
++else()
++    target_include_directories(sfml-audio SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/miniaudio")
++endif()
+ 
+ # dr_mp3 sources
+ target_include_directories(sfml-audio SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/dr_mp3")
+diff -ru '--exclude=.git' a/src/SFML/Graphics/CMakeLists.txt b/src/SFML/Graphics/CMakeLists.txt
+--- a/src/SFML/Graphics/CMakeLists.txt	2026-04-16 06:24:07.000000000 -0700
++++ b/src/SFML/Graphics/CMakeLists.txt	2026-09-08 10:39:38.911139454 -0700
+@@ -109,8 +109,30 @@
+ endif()
+ 
+ if(SFML_USE_SYSTEM_DEPS)
+-    find_package(Freetype REQUIRED)
+-    find_package(HarfBuzz REQUIRED)
++    if(NOT TARGET Freetype::Freetype AND TARGET deps::freetype)
++        set(_CATALOG_FREETYPE_TARGET deps::freetype)
++        get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
++        while(_CATALOG_FREETYPE_REAL)
++            set(_CATALOG_FREETYPE_TARGET ${_CATALOG_FREETYPE_REAL})
++            get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
++        endwhile()
++        add_library(Freetype::Freetype ALIAS ${_CATALOG_FREETYPE_TARGET})
++    endif()
++    if(NOT TARGET Freetype::Freetype)
++        find_package(Freetype REQUIRED)
++    endif()
++    if(NOT TARGET HarfBuzz::HarfBuzz AND TARGET deps::harfbuzz)
++        set(_CATALOG_HARFBUZZ_TARGET deps::harfbuzz)
++        get_target_property(_CATALOG_HARFBUZZ_REAL ${_CATALOG_HARFBUZZ_TARGET} ALIASED_TARGET)
++        while(_CATALOG_HARFBUZZ_REAL)
++            set(_CATALOG_HARFBUZZ_TARGET ${_CATALOG_HARFBUZZ_REAL})
++            get_target_property(_CATALOG_HARFBUZZ_REAL ${_CATALOG_HARFBUZZ_TARGET} ALIASED_TARGET)
++        endwhile()
++        add_library(HarfBuzz::HarfBuzz ALIAS ${_CATALOG_HARFBUZZ_TARGET})
++    endif()
++    if(NOT TARGET HarfBuzz::HarfBuzz)
++        find_package(HarfBuzz REQUIRED)
++    endif()
+ else()
+     # use a block to scope option variables we have to set
      block()

@@ -57,6 +57,7 @@ function(_recipe_SFML3_source)
   cl_add_dep(harfbuzz)
   cl_add_dep(libvorbis)
   cl_add_dep(libflac)
+  cl_add_dep(miniaudio)
 
   set(SFML3_TAG "3.1.0")
   if(CL_REQ_VERSION)

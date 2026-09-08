@@ -94,6 +94,7 @@ set(CATALOG_RECIPES
   stb_truetype:recipes/stb_truetype.cmake
   stb_vorbis:recipes/stb_vorbis.cmake
   dr_libs:recipes/dr_libs.cmake
+  miniaudio:recipes/miniaudio.cmake
   tsf:recipes/tsf.cmake
   dtc:recipes/dtc.cmake
 

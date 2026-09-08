@@ -1,0 +1,11 @@
+--- a/src/raudio.c
++++ b/src/raudio.c
+@@ -173,7 +173,7 @@
+ 
+ #define MINIAUDIO_IMPLEMENTATION
+ //#define MA_DEBUG_OUTPUT
+-#include "external/miniaudio.h"         // Audio device initialization and management
++#include <miniaudio.h>                  // Audio device initialization and management (catalog: deps::miniaudio)
+ #undef PlaySound                        // Win32 API: windows.h > mmsystem.h defines PlaySound macro
+ 
+ #include <stdlib.h>                     // Required for: malloc(), free()
