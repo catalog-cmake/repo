@@ -1,0 +1,62 @@
+--- a/src/SFML/Graphics/CMakeLists.txt
++++ b/src/SFML/Graphics/CMakeLists.txt
+@@ -123,7 +123,18 @@
+     target_link_libraries(sfml-graphics PRIVATE legacy_stdio_definitions.lib)
+ endif()
+ 
+-sfml_find_package(Freetype INCLUDE "FREETYPE_INCLUDE_DIRS" LINK "FREETYPE_LIBRARY")
++if(TARGET deps::freetype AND NOT TARGET Freetype)
++    set(_CATALOG_FREETYPE_TARGET deps::freetype)
++    get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
++    while(_CATALOG_FREETYPE_REAL)
++        set(_CATALOG_FREETYPE_TARGET ${_CATALOG_FREETYPE_REAL})
++        get_target_property(_CATALOG_FREETYPE_REAL ${_CATALOG_FREETYPE_TARGET} ALIASED_TARGET)
++    endwhile()
++    add_library(Freetype ALIAS ${_CATALOG_FREETYPE_TARGET})
++endif()
++if(NOT TARGET Freetype)
++    sfml_find_package(Freetype INCLUDE "FREETYPE_INCLUDE_DIRS" LINK "FREETYPE_LIBRARY")
++endif()
+ target_link_libraries(sfml-graphics PRIVATE Freetype)
+ 
+ # add preprocessor symbols
+--- a/src/SFML/Audio/CMakeLists.txt
++++ b/src/SFML/Audio/CMakeLists.txt
+@@ -68,9 +68,34 @@
+ endif()
+ 
+ # find external libraries
+-find_package(OpenAL REQUIRED)
+-sfml_find_package(VORBIS INCLUDE "VORBIS_INCLUDE_DIRS" LINK "VORBIS_LIBRARIES")
+-sfml_find_package(FLAC INCLUDE "FLAC_INCLUDE_DIR" LINK "FLAC_LIBRARY")
++if(TARGET deps::openal AND NOT TARGET OpenAL::OpenAL)
++    set(_CATALOG_OPENAL_TARGET deps::openal)
++    get_target_property(_CATALOG_OPENAL_REAL ${_CATALOG_OPENAL_TARGET} ALIASED_TARGET)
++    while(_CATALOG_OPENAL_REAL)
++        set(_CATALOG_OPENAL_TARGET ${_CATALOG_OPENAL_REAL})
++        get_target_property(_CATALOG_OPENAL_REAL ${_CATALOG_OPENAL_TARGET} ALIASED_TARGET)
++    endwhile()
++    add_library(OpenAL::OpenAL ALIAS ${_CATALOG_OPENAL_TARGET})
++endif()
++if(NOT TARGET OpenAL::OpenAL)
++    find_package(OpenAL REQUIRED)
++endif()
++
++if(TARGET deps::libvorbis AND NOT TARGET VORBIS)
++    add_library(VORBIS INTERFACE)
++    target_link_libraries(VORBIS INTERFACE deps::libvorbis)
++endif()
++if(NOT TARGET VORBIS)
++    sfml_find_package(VORBIS INCLUDE "VORBIS_INCLUDE_DIRS" LINK "VORBIS_LIBRARIES")
++endif()
++
++if(TARGET deps::libflac AND NOT TARGET FLAC)
++    add_library(FLAC INTERFACE)
++    target_link_libraries(FLAC INTERFACE deps::libflac)
++endif()
++if(NOT TARGET FLAC)
++    sfml_find_package(FLAC INCLUDE "FLAC_INCLUDE_DIR" LINK "FLAC_LIBRARY")
++endif()
+ 
+ # avoids warnings in vorbisfile.h
+ target_compile_definitions(VORBIS INTERFACE "OV_EXCLUDE_STATIC_CALLBACKS")

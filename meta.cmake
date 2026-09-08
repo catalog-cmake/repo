@@ -15,6 +15,13 @@ set(CATALOG_RECIPES
   SDL_ttf:recipes/sdl_ttf.cmake
   SDL_gfx:recipes/sdl_gfx.cmake
 
+  SFML2:recipes/sfml2.cmake
+  SFML3:recipes/sfml3.cmake
+
+  libogg:recipes/libogg.cmake
+  libvorbis:recipes/libvorbis.cmake
+  libflac:recipes/libflac.cmake
+
   freetype:recipes/freetype.cmake
   harfbuzz:recipes/harfbuzz.cmake
 
