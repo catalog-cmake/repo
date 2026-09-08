@@ -18,6 +18,8 @@ set(CATALOG_RECIPES
   SFML2:recipes/sfml2.cmake
   SFML3:recipes/sfml3.cmake
 
+  raylib:recipes/raylib.cmake
+
   libogg:recipes/libogg.cmake
   libvorbis:recipes/libvorbis.cmake
   libflac:recipes/libflac.cmake
