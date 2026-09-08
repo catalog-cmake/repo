@@ -114,6 +114,8 @@ set(CATALOG_RECIPES
 
   clay:recipes/clay.cmake
 
+  box2d:recipes/box2d.cmake
+
   libdlgmod:recipes/libdlgmod.cmake
   __getexecname:recipes/__getexecname.cmake
 
