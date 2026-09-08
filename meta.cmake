@@ -37,6 +37,11 @@ set(CATALOG_RECIPES
   GLEW:recipes/glew.cmake
   libretro:recipes/libretro.cmake
 
+  imgui:recipes/imgui.cmake
+  imgui_sdl2:recipes/imgui_sdl2.cmake
+  imgui_sdl3:recipes/imgui_sdl3.cmake
+  imgui_glfw:recipes/imgui_glfw.cmake
+
   lua:recipes/lua.cmake
   luajit:recipes/luajit.cmake
   sol2:recipes/sol2.cmake
