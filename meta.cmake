@@ -28,6 +28,10 @@ set(CATALOG_RECIPES
   harfbuzz:recipes/harfbuzz.cmake
 
   libcurl:recipes/libcurl.cmake
+  libssh2:recipes/libssh2.cmake
+  nghttp2:recipes/nghttp2.cmake
+  c-ares:recipes/c-ares.cmake
+  libpsl:recipes/libpsl.cmake
   websocketpp:recipes/websocketpp.cmake
   msgpack:recipes/msgpack.cmake
   mistpp:recipes/mistpp.cmake

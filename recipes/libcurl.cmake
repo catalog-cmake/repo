@@ -80,10 +80,9 @@ function(_recipe_libcurl_source)
       "BUILD_TESTING" "OFF"
       "BUILD_EXAMPLES" "OFF"
       "CURL_DISABLE_INSTALL" "ON"
-      "CURL_ENABLE_SSL" "OFF"
-      "ENABLE_ARES" "OFF"
-      "CURL_USE_LIBSSH2" "OFF"
-      "CURL_USE_LIBPSL" "OFF"
+      "CURL_ENABLE_SSL" "ON"
+      "CURL_USE_OPENSSL" "OFF"
+      "CURL_USE_MBEDTLS" "ON"
   )
 
   if(TARGET CURL::libcurl)

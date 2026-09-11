@@ -52,14 +52,17 @@ function(_recipe_zstd_source)
 
   cl_import_source(
     NAME zstd
+    DOWNLOAD_ONLY
     URL https://github.com/facebook/zstd/archive/refs/tags/${ZSTD_TAG}.tar.gz
-    OPTIONS
-      "ZSTD_BUILD_SHARED" "${ZSTD_BUILD_SHARED}"
-      "ZSTD_BUILD_STATIC" "${ZSTD_BUILD_STATIC}"
-      "ZSTD_BUILD_PROGRAMS" "OFF"
-      "ZSTD_BUILD_TESTS" "OFF"
-      "ZSTD_BUILD_CONTRIB" "OFF"
   )
+
+  set(ZSTD_BUILD_SHARED "${ZSTD_BUILD_SHARED}" CACHE BOOL "" FORCE)
+  set(ZSTD_BUILD_STATIC "${ZSTD_BUILD_STATIC}" CACHE BOOL "" FORCE)
+  set(ZSTD_BUILD_PROGRAMS OFF CACHE BOOL "" FORCE)
+  set(ZSTD_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+  set(ZSTD_BUILD_CONTRIB OFF CACHE BOOL "" FORCE)
+
+  add_subdirectory("${CL_SOURCE_DIR}/build/cmake" "${CL_SOURCE_DIR}-build")
 
   if(CL_STATIC AND TARGET libzstd_static)
     add_library(deps::zstd ALIAS libzstd_static)

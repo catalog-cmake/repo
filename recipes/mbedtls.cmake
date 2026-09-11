@@ -1,9 +1,9 @@
 function(_recipe_mbedtls_system)
   if(NOT CMAKE_CROSSCOMPILING)
     if(CL_REQ_VERSION)
-      find_package(MbedTLS ${CL_REQ_VERSION} QUIET)
+      find_package(MbedTLS ${CL_REQ_VERSION} CONFIG QUIET)
     else()
-      find_package(MbedTLS QUIET)
+      find_package(MbedTLS CONFIG QUIET)
     endif()
 
     if(TARGET MbedTLS::mbedtls)

@@ -1,0 +1,18 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -301,7 +301,14 @@
+ 
+ if(CRYPTO_BACKEND STREQUAL "OpenSSL" OR NOT CRYPTO_BACKEND)
+ 
+-  find_package(OpenSSL ${_specific_crypto_requirement})
++  if(NOT TARGET OpenSSL::SSL)
++    cl_add_dep(openssl)
++  endif()
++  if(TARGET OpenSSL::SSL)
++    set(OPENSSL_FOUND TRUE)
++  else()
++    find_package(OpenSSL ${_specific_crypto_requirement})
++  endif()
+ 
+   if(OPENSSL_FOUND)
+     set(CRYPTO_BACKEND "OpenSSL")
