@@ -64,10 +64,6 @@ function(_recipe_raylib_source)
   )
 
   if(TARGET raylib AND TARGET deps::miniaudio)
-    # Not target_link_libraries(raylib PRIVATE deps::miniaudio) - raylib's
-    # own install(EXPORT raylib-targets ...) requires every linked target to
-    # be in that export set, and miniaudio isn't. It's header-only anyway,
-    # so just copy over the include path and the plain system link libs.
     get_target_property(_MINIAUDIO_INCLUDES deps::miniaudio INTERFACE_INCLUDE_DIRECTORIES)
     if(_MINIAUDIO_INCLUDES)
       target_include_directories(raylib PRIVATE ${_MINIAUDIO_INCLUDES})

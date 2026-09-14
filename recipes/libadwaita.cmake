@@ -1,0 +1,23 @@
+function(_recipe_libadwaita_system)
+  cl_format_pkgconfig_req("libadwaita-1" "${CL_VERSION_REQ}" PKG_SPEC)
+  find_package(PkgConfig QUIET)
+  if(PkgConfig_FOUND)
+    pkg_check_modules(libadwaita IMPORTED_TARGET GLOBAL ${PKG_SPEC})
+  endif()
+endfunction()
+
+function(_recipe_libadwaita_package)
+  if(CL_PACKAGE_MANAGER STREQUAL "apt")
+    set(CL_PACKAGE_NAME "libadwaita-1-dev" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+    set(CL_PACKAGE_NAME "libadwaita" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
+    set(CL_PACKAGE_NAME "libadwaita" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "yum")
+    set(CL_PACKAGE_NAME "libadwaita-devel" PARENT_SCOPE)
+  elseif(CL_PACKAGE_MANAGER STREQUAL "zypper")
+    set(CL_PACKAGE_NAME "libadwaita-devel" PARENT_SCOPE)
+  endif()
+endfunction()
+
+# TODO: source build

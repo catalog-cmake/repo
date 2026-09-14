@@ -7,7 +7,6 @@ function(_recipe_nghttp2_system)
     endif()
 
     if(TARGET nghttp2::nghttp2)
-      add_library(deps::nghttp2 ALIAS nghttp2::nghttp2)
       return()
     endif()
   endif()
@@ -47,9 +46,6 @@ function(_recipe_nghttp2_source)
     set(NGHTTP2_TAG "v${CL_REQ_VERSION}")
   endif()
 
-  # Forced OFF regardless of the ambient BUILD_SHARED_LIBS value: with it ON,
-  # nghttp2's own CMakeLists ends up doing add_library(nghttp2 ALIAS nghttp2)
-  # (its shared target is itself already named "nghttp2"), which errors.
   set(_NGHTTP2_PREV_SHARED "${BUILD_SHARED_LIBS}")
   set(_NGHTTP2_PREV_STATIC "${BUILD_STATIC_LIBS}")
   set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)

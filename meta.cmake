@@ -125,6 +125,7 @@ set(CATALOG_RECIPES
 
   GTK3:recipes/gtk3.cmake
   GTK4:recipes/gtk4.cmake
+  libadwaita:recipes/libadwaita.cmake
   Qt5:recipes/qt5.cmake
   Qt6:recipes/qt6.cmake
 )
