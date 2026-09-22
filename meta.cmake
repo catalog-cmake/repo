@@ -33,6 +33,7 @@ set(CATALOG_RECIPES
   c-ares:recipes/c-ares.cmake
   libpsl:recipes/libpsl.cmake
   websocketpp:recipes/websocketpp.cmake
+  wslay:recipes/wslay.cmake
   msgpack:recipes/msgpack.cmake
   mistpp:recipes/mistpp.cmake
 
