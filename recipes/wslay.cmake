@@ -58,9 +58,12 @@ function(_recipe_wslay_source)
     set(WSLAY_BUILD_STATIC OFF)
   endif()
 
+  cl_repo_file(patches/wslay.patch WSLAY_PATCH)
+
   cl_import_source(
     NAME wslay
     URL https://github.com/tatsuhiro-t/wslay/archive/refs/tags/${WSLAY_TAG}.tar.gz
+    PATCHES "${WSLAY_PATCH}"
     OPTIONS
       "WSLAY_STATIC" "${WSLAY_BUILD_STATIC}"
       "WSLAY_SHARED" "${WSLAY_BUILD_SHARED}"
