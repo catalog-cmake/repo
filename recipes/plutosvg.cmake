@@ -13,9 +13,12 @@ function(_recipe_plutosvg_source)
     set(PLUTOSVG_TAG "v${CL_REQ_VERSION}")
   endif()
 
+  cl_repo_file(patches/plutosvg.patch PLUTOSVG_PATCH)
+
   cl_import_source(
     NAME plutosvg
     URL https://github.com/sammycage/plutosvg/archive/refs/tags/${PLUTOSVG_TAG}.tar.gz
     OPTIONS "PLUTOSVG_BUILD_EXAMPLES" "OFF" "PLUTOSVG_ENABLE_FREETYPE" "OFF"
+    PATCHES "${PLUTOSVG_PATCH}"
   )
 endfunction()
