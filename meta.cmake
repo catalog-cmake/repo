@@ -96,6 +96,7 @@ set(CATALOG_RECIPES
 
   openal:recipes/openal.cmake
   maxmod:recipes/maxmod.cmake
+  libpulse:recipes/libpulse.cmake
 
   ncurses:recipes/ncurses.cmake
   ftxui:recipes/ftxui.cmake
