@@ -1,4 +1,8 @@
+# DEPRECATED: please use `gh:ScratchEverywhere/mistpp` directly
+
 function(_recipe_mistpp_system)
+  _catalog_log(DEPRECATION "mist++ recipe is deprecated, use gh:ScratchEverywhere/mistpp instead")
+
   cl_format_pkgconfig_req("mist++" "${CL_VERSION_REQ}" PKG_SPEC)
   find_package(PkgConfig QUIET)
   if(PkgConfig_FOUND)
@@ -10,6 +14,8 @@ function(_recipe_mistpp_system)
 endfunction()
 
 function(_recipe_mistpp_source)
+  _catalog_log(DEPRECATION "mist++ recipe is deprecated, use gh:ScratchEverywhere/mistpp instead")
+
   cl_add_dep(libcurl)
   cl_add_dep(nlohmann_json)
 

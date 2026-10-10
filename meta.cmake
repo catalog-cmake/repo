@@ -35,7 +35,6 @@ set(CATALOG_RECIPES
   websocketpp:recipes/websocketpp.cmake
   wslay:recipes/wslay.cmake
   msgpack:recipes/msgpack.cmake
-  mistpp:recipes/mistpp.cmake
 
   GLFW:recipes/glfw.cmake
   GLAD:recipes/glad.cmake
@@ -131,4 +130,7 @@ set(CATALOG_RECIPES
   libadwaita:recipes/libadwaita.cmake
   Qt5:recipes/qt5.cmake
   Qt6:recipes/qt6.cmake
+
+  # DEPRECATED
+  mistpp:recipes/mistpp.cmake
 )
