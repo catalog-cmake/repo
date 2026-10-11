@@ -16,9 +16,12 @@ function(_recipe_expected-lite_source)
     set(EXPLITE_TAG "v${CL_REQ_VERSION}")
   endif()
 
+  cl_repo_file(patches/expected-lite.patch EXPLITE_PATCH)
+
   cl_import_source(
     NAME expected-lite
     URL https://github.com/nonstd-lite/expected-lite/archive/refs/tags/${EXPLITE_TAG}.tar.gz
+    PATCHES "${EXPLITE_PATCH}"
   )
 
   if(TARGET nonstd::expected-lite)
