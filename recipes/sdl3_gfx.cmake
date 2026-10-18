@@ -3,11 +3,7 @@ function(_recipe_SDL3_gfx_system)
 
   find_package(PkgConfig QUIET)
   if(PkgConfig_FOUND)
-    if(CL_STATIC)
-      pkg_check_modules(SDL3_gfx IMPORTED_TARGET GLOBAL "--static" ${PKG_SPEC})
-    else()
-      pkg_check_modules(SDL3_gfx IMPORTED_TARGET GLOBAL ${PKG_SPEC})
-    endif()
+    pkg_check_modules(SDL3_gfx IMPORTED_TARGET GLOBAL ${PKG_SPEC})
   endif()
 endfunction()
 

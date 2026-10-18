@@ -3,11 +3,7 @@ function(_recipe_luajit_system)
 
   find_package(PkgConfig QUIET)
   if(PkgConfig_FOUND)
-    if(CL_STATIC)
-      pkg_check_modules(luajit IMPORTED_TARGET GLOBAL "--static" ${PKG_SPEC})
-    else()
-      pkg_check_modules(luajit IMPORTED_TARGET GLOBAL ${PKG_SPEC})
-    endif()
+    pkg_check_modules(luajit IMPORTED_TARGET GLOBAL ${PKG_SPEC})
   endif()
 endfunction()
 
