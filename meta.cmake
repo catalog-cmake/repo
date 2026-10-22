@@ -131,6 +131,8 @@ set(CATALOG_RECIPES
   Qt5:recipes/qt5.cmake
   Qt6:recipes/qt6.cmake
 
+  llama-cpp:recipes/llama-cpp.cmake
+
   # DEPRECATED
   mistpp:recipes/mistpp.cmake
 )
