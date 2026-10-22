@@ -1,5 +1,5 @@
 # Fixes behavior for custom versions
-function(_recipe_llama-cpp_probe OUT_FOUND OUT_BUILD OUT_SHARED)
+function(_recipe_llama_cpp_probe OUT_FOUND OUT_BUILD OUT_SHARED)
   set(PROBE_DIR "${CMAKE_CURRENT_BINARY_DIR}/_catalog_probe/llama")
   file(MAKE_DIRECTORY "${PROBE_DIR}")
   file(WRITE "${PROBE_DIR}/CMakeLists.txt" [=[
@@ -21,9 +21,9 @@ endif()
   set(${OUT_SHARED} "${CL_LLAMA_PROBE_SHARED}" PARENT_SCOPE)
 endfunction()
 
-function(_recipe_llama_system)
+function(_recipe_llama-cpp_system)
   if(NOT CMAKE_CROSSCOMPILING)
-    _recipe_llama_probe(LLAMA_SYS_FOUND LLAMA_SYS_BUILD LLAMA_SYS_SHARED)
+    _recipe_llama_cpp_probe(LLAMA_SYS_FOUND LLAMA_SYS_BUILD LLAMA_SYS_SHARED)
 
     if(LLAMA_SYS_FOUND)
       set(LLAMA_SYS_OK TRUE)
@@ -46,6 +46,9 @@ function(_recipe_llama_system)
 
       if(LLAMA_SYS_OK)
         find_package(llama CONFIG QUIET)
+        if(TARGET llama)
+          add_library(deps::llama-cpp ALIAS llama)
+        endif()
       endif()
       return()
     endif()
@@ -55,11 +58,14 @@ function(_recipe_llama_system)
     find_package(PkgConfig QUIET)
     if(PkgConfig_FOUND)
       pkg_check_modules(llama IMPORTED_TARGET GLOBAL llama)
+      if(TARGET PkgConfig::llama)
+        add_library(deps::llama-cpp ALIAS PkgConfig::llama)
+      endif()
     endif()
   endif()
 endfunction()
 
-function(_recipe_llama_package)
+function(_recipe_llama-cpp_package)
   if(CL_REQUIRE_STATIC) # Most package managers don't provide static libs.
     return()
   endif()
@@ -71,7 +77,7 @@ function(_recipe_llama_package)
   endif()
 endfunction()
 
-function(_recipe_llama_source)
+function(_recipe_llama-cpp_source)
   set(LLAMA_BUILD "11804")
   if(CL_REQ_VERSION)
     set(LLAMA_BUILD "${CL_REQ_VERSION}")
@@ -85,7 +91,7 @@ function(_recipe_llama_source)
   endif()
 
   cl_import_source(
-    NAME llama
+    NAME llama-cpp
     URL https://github.com/ggml-org/llama.cpp/archive/refs/tags/b${LLAMA_BUILD}.tar.gz
     OPTIONS
       "BUILD_SHARED_LIBS" "${LLAMA_BUILD_SHARED}"
@@ -100,4 +106,8 @@ function(_recipe_llama_source)
       "LLAMA_BUILD_NUMBER" "${LLAMA_BUILD}"
       "LLAMA_BUILD_COMMIT" "b${LLAMA_BUILD}"
   )
+
+  if(TARGET llama)
+    add_library(deps::llama-cpp ALIAS llama)
+  endif()
 endfunction()
