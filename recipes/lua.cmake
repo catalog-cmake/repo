@@ -39,7 +39,7 @@ function(_recipe_lua_package)
 
   if(CL_PACKAGE_MANAGER STREQUAL "apt")
     set(CL_PACKAGE_NAME "liblua${LUA_MAJMIN}-dev" PARENT_SCOPE)
-  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman" AND CL_PACKAGE_REPO STREQUAL "arch")
     set(CL_PACKAGE_NAME "lua${LUA_MAJMIN_NODOT}" PARENT_SCOPE)
   elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
     set(CL_PACKAGE_NAME "lua" PARENT_SCOPE)

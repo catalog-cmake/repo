@@ -25,7 +25,7 @@ function(_recipe_libjpeg-turbo_package)
 
   if(CL_PACKAGE_MANAGER STREQUAL "apt")
     set(CL_PACKAGE_NAME "libjpeg-turbo8-dev" PARENT_SCOPE)
-  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman" AND CL_PACKAGE_REPO STREQUAL "arch")
     set(CL_PACKAGE_NAME "libjpeg-turbo" PARENT_SCOPE)
   elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
     set(CL_PACKAGE_NAME "jpeg-turbo" PARENT_SCOPE)

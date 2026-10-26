@@ -39,7 +39,7 @@ function(_recipe_SDL2_ttf_package)
 
   if(CL_PACKAGE_MANAGER STREQUAL "apt")
     set(CL_PACKAGE_NAME "libsdl2-ttf-dev" PARENT_SCOPE)
-  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman" AND CL_PACKAGE_REPO STREQUAL "arch")
     set(CL_PACKAGE_NAME "sdl2_ttf" PARENT_SCOPE)
   elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
     set(CL_PACKAGE_NAME "sdl2_ttf" PARENT_SCOPE)

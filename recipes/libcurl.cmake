@@ -43,7 +43,7 @@ function(_recipe_libcurl_package)
 
   if(CL_PACKAGE_MANAGER STREQUAL "apt")
     set(CL_PACKAGE_NAME "libcurl4-openssl-dev" PARENT_SCOPE)
-  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman")
+  elseif(CL_PACKAGE_MANAGER STREQUAL "pacman" AND CL_PACKAGE_REPO STREQUAL "arch")
     set(CL_PACKAGE_NAME "curl" PARENT_SCOPE)
   elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
     set(CL_PACKAGE_NAME "curl" PARENT_SCOPE)

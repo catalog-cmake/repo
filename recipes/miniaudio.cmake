@@ -11,7 +11,7 @@ function(_recipe_miniaudio_system)
 endfunction()
 
 function(_recipe_miniaudio_package)
-  if(CL_PACKAGE_MANAGER STREQUAL "pacman")
+  if(CL_PACKAGE_MANAGER STREQUAL "pacman" AND CL_PACKAGE_REPO STREQUAL "arch")
     set(CL_PACKAGE_NAME "miniaudio" PARENT_SCOPE)
   elseif(CL_PACKAGE_MANAGER STREQUAL "brew")
     set(CL_PACKAGE_NAME "miniaudio" PARENT_SCOPE)
