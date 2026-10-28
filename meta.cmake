@@ -133,6 +133,10 @@ set(CATALOG_RECIPES
 
   llama-cpp:recipes/llama-cpp.cmake
 
+  asmjit:recipes/asmjit.cmake
+  sljit:recipes/sljit.cmake
+  xbyak:recipes/xbyak.cmake
+
   # DEPRECATED
   mistpp:recipes/mistpp.cmake
 )
