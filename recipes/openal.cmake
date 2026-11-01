@@ -63,6 +63,7 @@ function(_recipe_openal_source)
       "ALSOFT_EXAMPLES" "OFF"
       "ALSOFT_TESTS" "OFF"
       "ALSOFT_INSTALL" "OFF"
+    INSTALL_OPTIONS "ALSOFT_INSTALL" "ON"
   )
 
   if(TARGET OpenAL::OpenAL AND NOT TARGET deps::openal)

@@ -64,6 +64,9 @@ function(_recipe_openssl_source)
     DOWNLOAD_ONLY
     URL https://github.com/openssl/openssl/archive/refs/tags/${OPENSSL_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   set(OPENSSL_PREFIX "${CL_SOURCE_DIR}-install")
   set(OPENSSL_CONFIG_ARGS --prefix=${OPENSSL_PREFIX} --openssldir=${OPENSSL_PREFIX}/ssl no-tests)
@@ -124,4 +127,46 @@ function(_recipe_openssl_latest)
   endif()
   string(REGEX REPLACE "^openssl-" "" RECIPE_VERSION "${OPENSSL_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_openssl_install PREFIX)
+  set(OPENSSL_STAGE "${CL_SOURCE_DIR}-stage")
+  file(REMOVE_RECURSE "${OPENSSL_STAGE}")
+  find_program(OPENSSL_MAKE_EXE make)
+  find_program(OPENSSL_PERL_EXE perl)
+  set(OPENSSL_CONFIG_ARGS --prefix=${PREFIX} --openssldir=${PREFIX}/ssl no-tests)
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    list(APPEND OPENSSL_CONFIG_ARGS no-shared)
+  endif()
+  execute_process(
+    COMMAND ${OPENSSL_PERL_EXE} ./Configure ${OPENSSL_CONFIG_ARGS}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE OPENSSL_CONFIGURE_RESULT
+  )
+  if(NOT OPENSSL_CONFIGURE_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "openssl: Configure failed")
+  endif()
+  include(ProcessorCount)
+  ProcessorCount(OPENSSL_NPROC)
+  if(OPENSSL_NPROC EQUAL 0)
+    set(OPENSSL_NPROC 1)
+  endif()
+  execute_process(
+    COMMAND ${OPENSSL_MAKE_EXE} -j${OPENSSL_NPROC}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE OPENSSL_BUILD_RESULT
+  )
+  if(NOT OPENSSL_BUILD_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "openssl: build failed")
+  endif()
+  execute_process(
+    COMMAND ${OPENSSL_MAKE_EXE} install_sw DESTDIR=${OPENSSL_STAGE}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE OPENSSL_INSTALL_RESULT
+  )
+  if(NOT OPENSSL_INSTALL_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "openssl: install failed")
+  endif()
+  file(GLOB OPENSSL_STAGED LIST_DIRECTORIES true "${OPENSSL_STAGE}${PREFIX}/*")
+  cl_install_files(DESTINATION . ${OPENSSL_STAGED})
 endfunction()

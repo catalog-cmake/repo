@@ -53,6 +53,9 @@ function(_recipe_zstd_source)
     DOWNLOAD_ONLY
     URL https://github.com/facebook/zstd/archive/refs/tags/${ZSTD_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   set(ZSTD_BUILD_SHARED "${ZSTD_BUILD_SHARED}" CACHE BOOL "" FORCE)
   set(ZSTD_BUILD_STATIC "${ZSTD_BUILD_STATIC}" CACHE BOOL "" FORCE)
@@ -80,4 +83,24 @@ function(_recipe_zstd_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${ZSTD_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_zstd_install PREFIX)
+  set(ZSTD_BUILD_SHARED ON)
+  set(ZSTD_BUILD_STATIC ON)
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    set(ZSTD_BUILD_SHARED OFF)
+  elseif(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
+    set(ZSTD_BUILD_STATIC OFF)
+  endif()
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(zstd "${PREFIX}" FROM_SOURCE SUBDIR build/cmake
+    OPTIONS
+      "ZSTD_BUILD_SHARED" "${ZSTD_BUILD_SHARED}"
+      "ZSTD_BUILD_STATIC" "${ZSTD_BUILD_STATIC}"
+      "ZSTD_BUILD_PROGRAMS" "OFF"
+      "ZSTD_BUILD_TESTS" "OFF"
+      "ZSTD_BUILD_CONTRIB" "OFF"
+  )
 endfunction()

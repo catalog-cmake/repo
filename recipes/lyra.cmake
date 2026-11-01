@@ -29,6 +29,9 @@ function(_recipe_lyra_source)
     URL https://github.com/bfgroup/Lyra/archive/refs/tags/${LYRA_TAG}.tar.gz
     DOWNLOAD_ONLY
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   add_library(lyra INTERFACE)
   target_include_directories(lyra INTERFACE ${CL_SOURCE_DIR}/include)
@@ -40,4 +43,8 @@ function(_recipe_lyra_latest)
     set(LYRA_TAG "${CL_REQ_VERSION}")
   endif()
   cl_set_version("${LYRA_TAG}")
+endfunction()
+
+function(_recipe_lyra_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/include/lyra")
 endfunction()

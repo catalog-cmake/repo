@@ -35,7 +35,9 @@ function(_recipe_raylib_package)
 endfunction()
 
 function(_recipe_raylib_source)
-  cl_add_dep(miniaudio)
+  if(NOT CL_INSTALL_PREFIX)
+    cl_add_dep(miniaudio)
+  endif()
 
   set(RAYLIB_TAG "6.0")
   if(CL_REQ_VERSION)
@@ -49,11 +51,15 @@ function(_recipe_raylib_source)
   endif()
 
   cl_repo_file(patches/raylib.patch RAYLIB_PATCH)
+  set(RAYLIB_PATCHES "${RAYLIB_PATCH}")
+  if(CL_INSTALL_PREFIX)
+    set(RAYLIB_PATCHES "")
+  endif()
 
   cl_import_source(
     NAME raylib
     URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_TAG}.tar.gz
-    PATCHES "${RAYLIB_PATCH}"
+    PATCHES ${RAYLIB_PATCHES}
     OPTIONS
       "BUILD_SHARED_LIBS" "${RAYLIB_BUILD_SHARED}"
       "WITH_PIC" "ON"

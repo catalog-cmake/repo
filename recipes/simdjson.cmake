@@ -42,6 +42,7 @@ function(_recipe_simdjson_source)
       "BUILD_SHARED_LIBS" "${SIMDJSON_BUILD_SHARED}"
       "SIMDJSON_DEVELOPER_MODE" "OFF"
       "SIMDJSON_INSTALL" "OFF"
+    INSTALL_OPTIONS "SIMDJSON_INSTALL" "ON"
   )
 endfunction()
 

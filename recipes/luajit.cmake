@@ -45,6 +45,9 @@ function(_recipe_luajit_source)
     REPO https://github.com/LuaJIT/LuaJIT.git
     REF ${LUAJIT_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   execute_process(
     COMMAND ${LUAJIT_MAKE_EXE}
@@ -65,4 +68,33 @@ function(_recipe_luajit_source)
     set_property(TARGET luajit APPEND PROPERTY INTERFACE_LINK_LIBRARIES ${LUAJIT_DL_LIBRARY})
   endif()
   set_property(TARGET luajit APPEND PROPERTY INTERFACE_LINK_LIBRARIES m)
+endfunction()
+
+function(_recipe_luajit_install PREFIX)
+  set(LUAJIT_STAGE "${CL_SOURCE_DIR}-stage")
+  file(REMOVE_RECURSE "${LUAJIT_STAGE}")
+  find_program(LUAJIT_MAKE_EXE make)
+  include(ProcessorCount)
+  ProcessorCount(LUAJIT_NPROC)
+  if(LUAJIT_NPROC EQUAL 0)
+    set(LUAJIT_NPROC 1)
+  endif()
+  execute_process(
+    COMMAND ${LUAJIT_MAKE_EXE} -j${LUAJIT_NPROC} PREFIX=${PREFIX}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE LUAJIT_BUILD_RESULT
+  )
+  if(NOT LUAJIT_BUILD_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "luajit: build failed")
+  endif()
+  execute_process(
+    COMMAND ${LUAJIT_MAKE_EXE} install PREFIX=${PREFIX} DESTDIR=${LUAJIT_STAGE}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE LUAJIT_INSTALL_RESULT
+  )
+  if(NOT LUAJIT_INSTALL_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "luajit: install failed")
+  endif()
+  file(GLOB LUAJIT_STAGED LIST_DIRECTORIES true "${LUAJIT_STAGE}${PREFIX}/*")
+  cl_install_files(DESTINATION . ${LUAJIT_STAGED})
 endfunction()

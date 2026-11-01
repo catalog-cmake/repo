@@ -19,6 +19,7 @@ function(_recipe_lunasvg_source)
     NAME lunasvg
     URL https://github.com/sammycage/lunasvg/archive/refs/tags/${LUNASVG_TAG}.tar.gz
     OPTIONS "LUNASVG_BUILD_EXAMPLES" "OFF" "plutovg_FOUND" "TRUE"
+    INSTALL_OPTIONS "USE_SYSTEM_PLUTOVG" "ON" "plutovg_FOUND" "OFF"
   )
 endfunction()
 

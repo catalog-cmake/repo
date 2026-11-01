@@ -1,6 +1,5 @@
 function(_recipe_sqlite3_system)
   if(NOT CMAKE_CROSSCOMPILING)
-    # CMake ships a built-in FindSQLite3 module.
     if(CL_REQ_VERSION)
       find_package(SQLite3 ${CL_REQ_VERSION} QUIET)
     else()
@@ -65,6 +64,9 @@ function(_recipe_sqlite3_source)
     DOWNLOAD_ONLY
     URL https://www.sqlite.org/2026/sqlite-amalgamation-${SQLITE_NUMBER}.zip
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/sqlite3.c")
     _catalog_log(FATAL_ERROR "sqlite3: amalgamation source not found under ${CL_SOURCE_DIR}")
@@ -90,4 +92,10 @@ endfunction()
 function(_recipe_sqlite3_latest)
   _sqlite3_version(RECIPE_VERSION "3530400")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_sqlite3_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(sqlite3 "${PREFIX}")
 endfunction()

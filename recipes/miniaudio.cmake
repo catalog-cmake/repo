@@ -30,6 +30,9 @@ function(_recipe_miniaudio_source)
     REPO https://github.com/mackron/miniaudio.git
     REF ${MINIAUDIO_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/miniaudio.h")
     _catalog_log(FATAL_ERROR "miniaudio: miniaudio.h not found under ${CL_SOURCE_DIR}")
@@ -40,4 +43,8 @@ function(_recipe_miniaudio_source)
   if(UNIX AND NOT APPLE)
     target_link_libraries(miniaudio INTERFACE m pthread dl)
   endif()
+endfunction()
+
+function(_recipe_miniaudio_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/miniaudio.h")
 endfunction()

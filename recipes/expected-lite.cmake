@@ -19,11 +19,15 @@ function(_recipe_expected-lite_source)
   cl_set_version("${RECIPE_VERSION}")
 
   cl_repo_file(patches/expected-lite.patch EXPLITE_PATCH)
+  set(EXPLITE_PATCHES "${EXPLITE_PATCH}")
+  if(CL_INSTALL_PREFIX)
+    set(EXPLITE_PATCHES "")
+  endif()
 
   cl_import_source(
     NAME expected-lite
     URL https://github.com/nonstd-lite/expected-lite/archive/refs/tags/${EXPLITE_TAG}.tar.gz
-    PATCHES "${EXPLITE_PATCH}"
+    PATCHES ${EXPLITE_PATCHES}
   )
 
   if(TARGET nonstd::expected-lite)

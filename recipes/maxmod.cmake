@@ -29,6 +29,9 @@ function(_recipe_maxmod_source)
     DOWNLOAD_ONLY
     URL https://codeberg.org/blocksds/maxmod/archive/${MAXMOD_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/source/core/mas.c")
     _catalog_log(FATAL_ERROR "maxmod: expected sources not found under ${CL_SOURCE_DIR}/source/core")
@@ -51,4 +54,10 @@ function(_recipe_maxmod_latest)
   endif()
   string(REGEX REPLACE "^v|-blocks$" "" RECIPE_VERSION "${MAXMOD_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_maxmod_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(maxmod "${PREFIX}")
 endfunction()

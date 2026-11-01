@@ -38,6 +38,9 @@ function(_recipe_rapidjson_source)
     URL https://github.com/Tencent/rapidjson/archive/refs/tags/${RAPIDJSON_TAG}.tar.gz
     PATCHES "${RAPIDJSON_PATCH}"
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/include/rapidjson/rapidjson.h")
     _catalog_log(FATAL_ERROR "rapidjson: rapidjson.h not found under ${CL_SOURCE_DIR}/include")
@@ -58,4 +61,8 @@ function(_recipe_rapidjson_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${RAPIDJSON_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_rapidjson_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/include/rapidjson")
 endfunction()

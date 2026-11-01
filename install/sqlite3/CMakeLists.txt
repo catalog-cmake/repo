@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.15)
+project(sqlite3 C)
+
+add_library(sqlite3 ${SOURCE_DIR}/sqlite3.c)
+target_include_directories(sqlite3 PUBLIC $<BUILD_INTERFACE:${SOURCE_DIR}> $<INSTALL_INTERFACE:include>)
+target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_FTS5 SQLITE_ENABLE_RTREE SQLITE_ENABLE_JSON1)
+if(UNIX)
+  target_link_libraries(sqlite3 PRIVATE m pthread)
+  find_library(SQLITE3_DL_LIBRARY dl)
+  if(SQLITE3_DL_LIBRARY)
+    target_link_libraries(sqlite3 PRIVATE ${SQLITE3_DL_LIBRARY})
+  endif()
+endif()
+
+install(TARGETS sqlite3 ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
+install(FILES ${SOURCE_DIR}/sqlite3.h ${SOURCE_DIR}/sqlite3ext.h DESTINATION include)

@@ -50,6 +50,9 @@ function(_recipe_GLEW_source)
     DOWNLOAD_ONLY
     URL https://github.com/nigels-com/glew/releases/download/${GLEW_TAG}/${GLEW_TAG}.tgz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/build/cmake/CMakeLists.txt")
     _catalog_log(FATAL_ERROR "GLEW: expected build/cmake/CMakeLists.txt not found under ${CL_SOURCE_DIR}")
@@ -75,4 +78,10 @@ function(_recipe_GLEW_latest)
   endif()
   string(REGEX REPLACE "^glew-" "" RECIPE_VERSION "${GLEW_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_GLEW_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(GLEW "${PREFIX}" FROM_SOURCE SUBDIR build/cmake)
 endfunction()

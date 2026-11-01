@@ -14,6 +14,9 @@ function(_recipe_dr_libs_source)
     REPO https://github.com/mackron/dr_libs.git
     REF master
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/dr_wav.h")
     _catalog_log(FATAL_ERROR "dr_libs: dr_wav.h not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,9 @@ function(_recipe_dr_libs_source)
 
   add_library(dr_libs INTERFACE)
   target_include_directories(dr_libs INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_dr_libs_install PREFIX)
+  file(GLOB DR_LIBS_HEADERS "${CL_SOURCE_DIR}/dr_*.h")
+  cl_install_files(DESTINATION include ${DR_LIBS_HEADERS})
 endfunction()

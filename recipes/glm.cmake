@@ -39,6 +39,7 @@ function(_recipe_glm_source)
     NAME glm
     URL https://github.com/g-truc/glm/archive/refs/tags/${GLM_TAG}.tar.gz
     OPTIONS "GLM_BUILD_TESTS" "OFF" "GLM_BUILD_INSTALL" "OFF"
+    INSTALL_OPTIONS "GLM_BUILD_INSTALL" "ON"
   )
 endfunction()
 

@@ -41,5 +41,6 @@ function(_recipe_asmjit_source)
       "ASMJIT_STATIC" "${ASMJIT_BUILD_STATIC}"
       "ASMJIT_TEST" "OFF"
       "ASMJIT_NO_INSTALL" "ON"
+    INSTALL_OPTIONS "ASMJIT_NO_INSTALL" "OFF"
   )
 endfunction()

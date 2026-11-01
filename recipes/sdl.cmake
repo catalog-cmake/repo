@@ -46,11 +46,16 @@ function(_recipe_SDL_source)
   string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL1_TAG}")
   cl_set_version("${RECIPE_VERSION}")
 
+  cl_repo_file(patches/sdl.patch SDL1_PATCH)
   cl_import_source(
     NAME SDL
     DOWNLOAD_ONLY
     URL https://github.com/libsdl-org/SDL-1.2/archive/refs/tags/${SDL1_TAG}.tar.gz
+    PATCHES "${SDL1_PATCH}"
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   execute_process(
     COMMAND ${SDL1_SH_EXE} autogen.sh
@@ -70,7 +75,7 @@ function(_recipe_SDL_source)
   endif()
 
   execute_process(
-    COMMAND ${SDL1_SH_EXE} ./configure ${SDL1_CONFIGURE_ARGS}
+    COMMAND ${CMAKE_COMMAND} -E env "CFLAGS=-O2 -std=gnu99" ${SDL1_SH_EXE} ./configure ${SDL1_CONFIGURE_ARGS}
     WORKING_DIRECTORY "${CL_SOURCE_DIR}"
     RESULT_VARIABLE SDL1_CONFIGURE_RESULT
   )
@@ -111,4 +116,43 @@ function(_recipe_SDL_latest)
   endif()
   string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL1_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_SDL_install PREFIX)
+  set(SDL1_STAGE "${CL_SOURCE_DIR}-stage")
+  file(REMOVE_RECURSE "${SDL1_STAGE}")
+  find_program(SDL1_SH_EXE sh)
+  find_program(SDL1_MAKE_EXE make)
+  execute_process(
+    COMMAND ${SDL1_SH_EXE} autogen.sh
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE SDL1_AUTOGEN_RESULT
+  )
+  if(NOT SDL1_AUTOGEN_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "SDL: autogen.sh failed")
+  endif()
+  set(SDL1_CONFIGURE_ARGS --prefix=${PREFIX})
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    list(APPEND SDL1_CONFIGURE_ARGS --disable-shared --enable-static)
+  else()
+    list(APPEND SDL1_CONFIGURE_ARGS --enable-shared --disable-static)
+  endif()
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E env "CFLAGS=-O2 -std=gnu99" ${SDL1_SH_EXE} ./configure ${SDL1_CONFIGURE_ARGS}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE SDL1_CONFIGURE_RESULT
+  )
+  if(NOT SDL1_CONFIGURE_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "SDL: configure failed")
+  endif()
+  execute_process(
+    COMMAND ${SDL1_MAKE_EXE} install DESTDIR=${SDL1_STAGE}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE SDL1_INSTALL_RESULT
+  )
+  if(NOT SDL1_INSTALL_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "SDL: build or install failed")
+  endif()
+  file(GLOB SDL1_STAGED LIST_DIRECTORIES true "${SDL1_STAGE}${PREFIX}/*")
+  cl_install_files(DESTINATION . ${SDL1_STAGED})
 endfunction()

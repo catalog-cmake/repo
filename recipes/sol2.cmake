@@ -26,6 +26,15 @@ function(_recipe_sol2_source)
 
   set(SOL2_URL "https://github.com/ThePhD/sol2/archive/refs/tags/${SOL2_TAG}.tar.gz")
 
+  if(CL_INSTALL_PREFIX)
+    cl_import_source(
+      NAME sol2
+      URL ${SOL2_URL}
+      DOWNLOAD_ONLY
+    )
+    return()
+  endif()
+
   _catalog_get_cache_dir(SOL2_CACHE_DIR)
   string(SHA256 SOL2_HASH "${SOL2_URL}")
   string(SUBSTRING "${SOL2_HASH}" 0 12 SOL2_HASH_SHORT)
@@ -66,4 +75,8 @@ function(_recipe_sol2_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SOL2_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_sol2_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/include/sol")
 endfunction()

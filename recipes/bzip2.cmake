@@ -53,6 +53,9 @@ function(_recipe_bzip2_source)
     DOWNLOAD_ONLY
     URL https://github.com/libarchive/bzip2/archive/refs/tags/${BZIP2_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/bzlib.c")
     _catalog_log(FATAL_ERROR "bzip2: expected sources not found under ${CL_SOURCE_DIR}")
@@ -78,4 +81,10 @@ function(_recipe_bzip2_latest)
   endif()
   string(REGEX REPLACE "^bzip2-" "" RECIPE_VERSION "${BZIP2_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_bzip2_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(bzip2 "${PREFIX}")
 endfunction()

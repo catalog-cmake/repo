@@ -24,5 +24,4 @@ function(_recipe_libpsl_package)
   endif()
 endfunction()
 
-# TODO: Source build. libpsl uses Autotools/Meson, not CMake - no
-# CMakeLists.txt anywhere in the repo to add_subdirectory().
+# TODO: Source build.

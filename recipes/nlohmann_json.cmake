@@ -26,6 +26,7 @@ function(_recipe_nlohmann_json_source)
     NAME nlohmann_json
     URL https://github.com/nlohmann/json/archive/refs/tags/${NLOHMANN_JSON_TAG}.tar.gz
     OPTIONS "JSON_BuildTests" "OFF" "JSON_Install" "OFF"
+    INSTALL_OPTIONS "JSON_Install" "ON"
   )
 endfunction()
 

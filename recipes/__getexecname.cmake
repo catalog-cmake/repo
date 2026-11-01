@@ -5,6 +5,9 @@ function(_recipe___getexecname_source)
     REPO https://github.com/samuelvenable/__getexecname.git
     REF main
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/__getbasepath/internal.cpp")
     _catalog_log(FATAL_ERROR "__getexecname: expected sources not found under ${CL_SOURCE_DIR}")
@@ -20,4 +23,10 @@ function(_recipe___getexecname_source)
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Haiku")
     target_link_libraries(__getexecname PUBLIC haiku)
   endif()
+endfunction()
+
+function(_recipe___getexecname_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(__getexecname "${PREFIX}")
 endfunction()

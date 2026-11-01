@@ -18,6 +18,7 @@ function(_recipe_ftxui_source)
       "FTXUI_BUILD_DOCS" "OFF"
       "FTXUI_BUILD_TESTS" "OFF"
       "FTXUI_ENABLE_INSTALL" "OFF"
+    INSTALL_OPTIONS "FTXUI_ENABLE_INSTALL" "ON"
   )
 endfunction()
 

@@ -54,6 +54,9 @@ function(_recipe_Boost_source)
     REPO https://github.com/boostorg/boost.git
     REF ${BOOST_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   execute_process(
     COMMAND ${BOOST_GIT_EXE} submodule update --init --recursive --jobs 8
@@ -64,10 +67,6 @@ function(_recipe_Boost_source)
     _catalog_log(FATAL_ERROR "Boost: git submodule update failed")
   endif()
 
-  # Without this, the superproject's root CMakeLists.txt compiles every
-  # component library (confirmed directly - 370+ compiled targets even
-  # though only Boost::headers ends up used below) regardless of what a
-  # consumer actually links against.
   set(BOOST_INCLUDE_LIBRARIES headers CACHE STRING "" FORCE)
   add_subdirectory("${CL_SOURCE_DIR}" "${CL_SOURCE_DIR}-build")
 
@@ -94,4 +93,22 @@ function(_recipe_Boost_latest)
   endif()
   string(REGEX REPLACE "^boost-" "" RECIPE_VERSION "${BOOST_REF}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_Boost_install PREFIX)
+  find_program(BOOST_GIT_EXE git)
+  execute_process(
+    COMMAND ${BOOST_GIT_EXE} submodule update --init --recursive --jobs 8
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE BOOST_SUBMODULE_RESULT
+  )
+  if(NOT BOOST_SUBMODULE_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "Boost: git submodule update failed")
+  endif()
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(Boost "${PREFIX}" FROM_SOURCE
+    OPTIONS
+      "BOOST_INCLUDE_LIBRARIES" "headers"
+  )
 endfunction()

@@ -14,6 +14,9 @@ function(_recipe_stb_truetype_source)
     REPO https://github.com/nothings/stb.git
     REF master
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/stb_truetype.h")
     _catalog_log(FATAL_ERROR "stb_truetype: stb_truetype.h not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,8 @@ function(_recipe_stb_truetype_source)
 
   add_library(stb_truetype INTERFACE)
   target_include_directories(stb_truetype INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_stb_truetype_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/stb_truetype.h")
 endfunction()

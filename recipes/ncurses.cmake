@@ -64,9 +64,12 @@ function(_recipe_ncurses_source)
     DOWNLOAD_ONLY
     URL https://invisible-mirror.net/archives/ncurses/ncurses-${NCURSES_VER}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   set(NCURSES_PREFIX "${CL_SOURCE_DIR}-install")
-  set(NCURSES_CONFIGURE_ARGS --prefix=${NCURSES_PREFIX} --with-termlib --enable-widec)
+  set(NCURSES_CONFIGURE_ARGS --prefix=${NCURSES_PREFIX} --with-termlib --enable-widec --without-ada)
   if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
     list(APPEND NCURSES_CONFIGURE_ARGS --without-shared --with-normal)
   elseif(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
@@ -122,4 +125,50 @@ function(_recipe_ncurses_latest)
     set(NCURSES_VER "${CL_REQ_VERSION}")
   endif()
   cl_set_version("${NCURSES_VER}")
+endfunction()
+
+function(_recipe_ncurses_install PREFIX)
+  set(NCURSES_STAGE "${CL_SOURCE_DIR}-stage")
+  file(REMOVE_RECURSE "${NCURSES_STAGE}")
+  find_program(NCURSES_MAKE_EXE make)
+  find_program(NCURSES_SH_EXE sh)
+  set(NCURSES_CONFIGURE_ARGS --prefix=${PREFIX} --with-termlib --enable-widec --without-ada)
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    list(APPEND NCURSES_CONFIGURE_ARGS --without-shared --with-normal)
+  elseif(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
+    list(APPEND NCURSES_CONFIGURE_ARGS --with-shared --without-normal)
+  else()
+    list(APPEND NCURSES_CONFIGURE_ARGS --with-shared --with-normal)
+  endif()
+  execute_process(
+    COMMAND ${NCURSES_SH_EXE} ./configure ${NCURSES_CONFIGURE_ARGS}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE NCURSES_CONFIGURE_RESULT
+  )
+  if(NOT NCURSES_CONFIGURE_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "ncurses: configure failed")
+  endif()
+  include(ProcessorCount)
+  ProcessorCount(NCURSES_NPROC)
+  if(NCURSES_NPROC EQUAL 0)
+    set(NCURSES_NPROC 1)
+  endif()
+  execute_process(
+    COMMAND ${NCURSES_MAKE_EXE} -j${NCURSES_NPROC}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE NCURSES_BUILD_RESULT
+  )
+  if(NOT NCURSES_BUILD_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "ncurses: build failed")
+  endif()
+  execute_process(
+    COMMAND ${NCURSES_MAKE_EXE} install DESTDIR=${NCURSES_STAGE}
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE NCURSES_INSTALL_RESULT
+  )
+  if(NOT NCURSES_INSTALL_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "ncurses: install failed")
+  endif()
+  file(GLOB NCURSES_STAGED LIST_DIRECTORIES true "${NCURSES_STAGE}${PREFIX}/*")
+  cl_install_files(DESTINATION . ${NCURSES_STAGED})
 endfunction()

@@ -10,6 +10,9 @@ function(_recipe_libdlgmod_source)
     REPO https://github.com/samuelvenable/libdlgmod.git
     REF ${LIBDLGMOD_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   set(LIBDLGMOD_DIR "${CL_SOURCE_DIR}/libdlgmod")
   if(NOT EXISTS "${LIBDLGMOD_DIR}")
@@ -70,4 +73,10 @@ function(_recipe_libdlgmod_source)
   )
 
   set_target_properties(libdlgmod PROPERTIES PREFIX "")
+endfunction()
+
+function(_recipe_libdlgmod_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(libdlgmod "${PREFIX}")
 endfunction()

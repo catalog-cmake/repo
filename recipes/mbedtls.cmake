@@ -53,6 +53,9 @@ function(_recipe_mbedtls_source)
     REPO https://github.com/Mbed-TLS/mbedtls.git
     REF ${MBEDTLS_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   execute_process(
     COMMAND ${MBEDTLS_GIT_EXE} submodule update --init --recursive
@@ -63,9 +66,6 @@ function(_recipe_mbedtls_source)
     _catalog_log(FATAL_ERROR "mbedtls: git submodule update failed")
   endif()
 
-  # ENABLE_TESTING is a generic name other projects check too, so its prior
-  # cache value is restored afterward rather than left forced for the rest
-  # of the configure (same leak risk noted for BUILD_SHARED_LIBS in lz4).
   set(_MBEDTLS_PREV_TESTING "${ENABLE_TESTING}")
   set(ENABLE_PROGRAMS OFF CACHE BOOL "" FORCE)
   set(ENABLE_TESTING OFF CACHE BOOL "" FORCE)
@@ -89,4 +89,23 @@ function(_recipe_mbedtls_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${MBEDTLS_REF}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_mbedtls_install PREFIX)
+  find_program(MBEDTLS_GIT_EXE git)
+  execute_process(
+    COMMAND ${MBEDTLS_GIT_EXE} submodule update --init --recursive
+    WORKING_DIRECTORY "${CL_SOURCE_DIR}"
+    RESULT_VARIABLE MBEDTLS_SUBMODULE_RESULT
+  )
+  if(NOT MBEDTLS_SUBMODULE_RESULT EQUAL 0)
+    _catalog_log(FATAL_ERROR "mbedtls: git submodule update failed")
+  endif()
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(mbedtls "${PREFIX}" FROM_SOURCE
+    OPTIONS
+      "ENABLE_PROGRAMS" "OFF"
+      "ENABLE_TESTING" "OFF"
+  )
 endfunction()

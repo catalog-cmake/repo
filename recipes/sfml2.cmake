@@ -49,17 +49,6 @@ function(_recipe_SFML2_package)
 endfunction()
 
 function(_recipe_SFML2_source)
-  # SFML only vendors its dependencies (freetype, openal, vorbis, flac) as
-  # prebuilt binaries for Windows/macOS/iOS/Android - on Linux it always
-  # calls find_package()/find_library() for them. Build them from source too
-  # and patch SFML's CMakeLists.txt (see patches/sfml2.patch) to prefer our
-  # in-tree targets over its own find_package()/sfml_find_package() calls.
-  # The window backend (X11/Xrandr/Xcursor/udev/OpenGL) is still resolved
-  # against the system, same as SDL2's window backend.
-  #
-  # SFML2 is built as a shared library by default, so any of these that
-  # get built from source need PIC objects to link into it - a CACHE var
-  # since cl_add_dep resolves each one in its own function scope.
   set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "")
 
   cl_add_dep(freetype)

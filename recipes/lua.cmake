@@ -64,6 +64,9 @@ function(_recipe_lua_source)
     DOWNLOAD_ONLY
     URL https://www.lua.org/ftp/lua-${LUA_VER}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   set(LUA_SRC_DIR "${CL_SOURCE_DIR}/src")
   if(NOT EXISTS "${LUA_SRC_DIR}/lua.h")
@@ -100,4 +103,10 @@ function(_recipe_lua_latest)
     set(LUA_VER "${LUA_MAJMIN}")
   endif()
   cl_set_version("${LUA_VER}")
+endfunction()
+
+function(_recipe_lua_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(lua "${PREFIX}")
 endfunction()

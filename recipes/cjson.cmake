@@ -48,6 +48,7 @@ function(_recipe_cjson_source)
       "ENABLE_CJSON_TEST" "OFF"
       "ENABLE_CJSON_UTILS" "OFF"
       "ENABLE_TARGET_EXPORT" "OFF"
+    INSTALL_OPTIONS "CMAKE_POLICY_VERSION_MINIMUM" "3.5"
   )
 endfunction()
 

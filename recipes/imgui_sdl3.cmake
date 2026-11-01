@@ -14,6 +14,9 @@ function(_recipe_imgui_sdl3_source)
     DOWNLOAD_ONLY
     URL https://github.com/ocornut/imgui/archive/refs/tags/${IMGUI_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/backends/imgui_impl_sdl3.h")
     _catalog_log(FATAL_ERROR "imgui_sdl3: backends/imgui_impl_sdl3.h not found under ${CL_SOURCE_DIR}")
@@ -40,4 +43,10 @@ function(_recipe_imgui_sdl3_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_imgui_sdl3_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(imgui_sdl3 "${PREFIX}")
 endfunction()

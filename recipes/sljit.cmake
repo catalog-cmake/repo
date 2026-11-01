@@ -23,6 +23,9 @@ function(_recipe_sljit_source)
     REPO https://github.com/zherczeg/sljit.git
     REF ${SLJIT_REF}
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   add_library(sljit STATIC "${CL_SOURCE_DIR}/sljit_src/sljitLir.c")
   target_include_directories(sljit PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}/sljit_src>)
@@ -36,4 +39,10 @@ function(_recipe_sljit_source)
   endif()
 
   add_library(deps::sljit ALIAS sljit)
+endfunction()
+
+function(_recipe_sljit_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(sljit "${PREFIX}")
 endfunction()

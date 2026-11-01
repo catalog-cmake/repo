@@ -65,6 +65,7 @@ function(_recipe_libvorbis_source)
     OPTIONS
       "BUILD_SHARED_LIBS" "${LIBVORBIS_BUILD_SHARED}"
       "INSTALL_CMAKE_PACKAGE_MODULE" "OFF"
+    INSTALL_OPTIONS "INSTALL_CMAKE_PACKAGE_MODULE" "ON"
   )
 
   if(TARGET vorbis AND TARGET vorbisenc AND TARGET vorbisfile)

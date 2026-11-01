@@ -1,3 +1,4 @@
+diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -6,8 +7,7 @@
  
  # This CMakeLists.txt file intended for:
  # - development of wslay library
-diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
-index 5d6aabf..f84e3c7 100644
+diff -ruN a/examples/CMakeLists.txt b/examples/CMakeLists.txt
 --- a/examples/CMakeLists.txt
 +++ b/examples/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -16,8 +16,7 @@ index 5d6aabf..f84e3c7 100644
  
  include(CheckIncludeFiles)
  check_include_files("sys/epoll.h" HAVE_EPOLL)
-diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
-index 25e637d..e731278 100644
+diff -ruN a/lib/CMakeLists.txt b/lib/CMakeLists.txt
 --- a/lib/CMakeLists.txt
 +++ b/lib/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -26,8 +25,31 @@ index 25e637d..e731278 100644
  
  # This CMakeLists.txt file intended for:
  # - include by master ../CMakeLists.txt
-diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
-index 1bfc6de..1fad186 100644
+diff -ruN a/lib/wslay_stack.c b/lib/wslay_stack.c
+--- a/lib/wslay_stack.c
++++ b/lib/wslay_stack.c
+@@ -27,7 +27,7 @@
+ #include <string.h>
+ #include <assert.h>
+ 
+-struct wslay_stack* wslay_stack_new()
++struct wslay_stack* wslay_stack_new(void)
+ {
+   struct wslay_stack *stack = (struct wslay_stack*)malloc
+     (sizeof(struct wslay_stack));
+diff -ruN a/lib/wslay_stack.h b/lib/wslay_stack.h
+--- a/lib/wslay_stack.h
++++ b/lib/wslay_stack.h
+@@ -40,7 +40,7 @@
+   struct wslay_stack_cell *top;
+ };
+ 
+-struct wslay_stack* wslay_stack_new();
++struct wslay_stack* wslay_stack_new(void);
+ void wslay_stack_free(struct wslay_stack *stack);
+ int wslay_stack_push(struct wslay_stack *stack, void *data);
+ void wslay_stack_pop(struct wslay_stack *stack);
+diff -ruN a/tests/CMakeLists.txt b/tests/CMakeLists.txt
 --- a/tests/CMakeLists.txt
 +++ b/tests/CMakeLists.txt
 @@ -1,4 +1,4 @@

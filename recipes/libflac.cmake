@@ -1,6 +1,5 @@
 function(_recipe_libflac_system)
   if(NOT CMAKE_CROSSCOMPILING)
-    # FLAC's own CMake config links Threads::Threads unconditionally.
     find_package(Threads QUIET)
 
     if(CL_REQ_VERSION)

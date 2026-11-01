@@ -69,6 +69,7 @@ function(_recipe_jsoncpp_source)
       "JSONCPP_WITH_POST_BUILD_UNITTEST" "OFF"
       "JSONCPP_WITH_EXAMPLE" "OFF"
       "JSONCPP_WITH_INSTALL" "OFF"
+    INSTALL_OPTIONS "JSONCPP_WITH_INSTALL" "ON"
   )
 
   if(TARGET jsoncpp_lib)

@@ -39,6 +39,9 @@ function(_recipe_websocketpp_source)
     URL https://github.com/zaphoyd/websocketpp/archive/refs/tags/${WSPP_TAG}.tar.gz
     DOWNLOAD_ONLY
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
   cl_get_var("SOURCE_DIR" WSPP_SRC_DIR)
 
   add_library(websocketpp INTERFACE)
@@ -52,4 +55,8 @@ function(_recipe_websocketpp_latest)
     set(WSPP_TAG "${CL_REQ_VERSION}")
   endif()
   cl_set_version("${WSPP_TAG}")
+endfunction()
+
+function(_recipe_websocketpp_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/websocketpp")
 endfunction()

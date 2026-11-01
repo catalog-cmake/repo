@@ -14,6 +14,9 @@ function(_recipe_tsf_source)
     REPO https://github.com/schellingb/TinySoundFont.git
     REF main
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/tsf.h")
     _catalog_log(FATAL_ERROR "tsf: tsf.h not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,8 @@ function(_recipe_tsf_source)
 
   add_library(tsf INTERFACE)
   target_include_directories(tsf INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_tsf_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/tsf.h" "${CL_SOURCE_DIR}/tml.h")
 endfunction()

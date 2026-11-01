@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.15)
+project(sljit C)
+
+add_library(sljit STATIC ${SOURCE_DIR}/sljit_src/sljitLir.c)
+target_include_directories(sljit PUBLIC $<BUILD_INTERFACE:${SOURCE_DIR}/sljit_src> $<INSTALL_INTERFACE:include/sljit>)
+set_target_properties(sljit PROPERTIES POSITION_INDEPENDENT_CODE ON)
+find_package(Threads QUIET)
+if(Threads_FOUND)
+  target_link_libraries(sljit PUBLIC Threads::Threads)
+endif()
+if(CMAKE_DL_LIBS)
+  target_link_libraries(sljit PUBLIC ${CMAKE_DL_LIBS})
+endif()
+
+file(GLOB SLJIT_HEADERS ${SOURCE_DIR}/sljit_src/*.h)
+install(TARGETS sljit ARCHIVE DESTINATION lib)
+install(FILES ${SLJIT_HEADERS} DESTINATION include/sljit)

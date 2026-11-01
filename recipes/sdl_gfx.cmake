@@ -29,6 +29,9 @@ function(_recipe_SDL_gfx_source)
     DOWNLOAD_ONLY
     URL https://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-${SDL_GFX1_VER}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/SDL_gfxPrimitives.c")
     _catalog_log(FATAL_ERROR "SDL_gfx: expected sources not found under ${CL_SOURCE_DIR}")
@@ -51,4 +54,10 @@ function(_recipe_SDL_gfx_latest)
     set(SDL_GFX1_VER "${CL_REQ_VERSION}")
   endif()
   cl_set_version("${SDL_GFX1_VER}")
+endfunction()
+
+function(_recipe_SDL_gfx_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(SDL_gfx "${PREFIX}")
 endfunction()

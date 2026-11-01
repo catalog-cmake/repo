@@ -15,3 +15,8 @@ function(_recipe_dtc_source)
       "DECTALKMINI_SDL2_EXAMPLE" "OFF"
   )
 endfunction()
+
+function(_recipe_dtc_install PREFIX)
+  cl_install_files(DESTINATION lib "${CL_SOURCE_BUILD_DIR}/libdtc.a")
+  cl_install_files(DESTINATION include/dtc "${CL_SOURCE_DIR}/include/")
+endfunction()

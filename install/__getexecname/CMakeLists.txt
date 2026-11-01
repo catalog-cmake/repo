@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.15)
+project(getexecname CXX)
+
+add_library(__getexecname STATIC ${SOURCE_DIR}/__getbasepath/internal.cpp)
+target_include_directories(__getexecname PUBLIC $<BUILD_INTERFACE:${SOURCE_DIR}> $<INSTALL_INTERFACE:include>)
+if(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
+  target_link_libraries(__getexecname PUBLIC kvm)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "SunOS")
+  target_link_libraries(__getexecname PUBLIC proc)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Haiku")
+  target_link_libraries(__getexecname PUBLIC haiku)
+endif()
+
+install(TARGETS __getexecname ARCHIVE DESTINATION lib)
+install(FILES ${SOURCE_DIR}/__getbasepath/internal.h ${SOURCE_DIR}/__getbasepath/external.h DESTINATION include/__getbasepath)

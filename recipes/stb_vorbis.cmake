@@ -14,6 +14,9 @@ function(_recipe_stb_vorbis_source)
     REPO https://github.com/nothings/stb.git
     REF master
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/stb_vorbis.c")
     _catalog_log(FATAL_ERROR "stb_vorbis: stb_vorbis.c not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,10 @@ function(_recipe_stb_vorbis_source)
 
   add_library(stb_vorbis STATIC "${CL_SOURCE_DIR}/stb_vorbis.c")
   target_include_directories(stb_vorbis PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_stb_vorbis_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(stb_vorbis "${PREFIX}")
 endfunction()

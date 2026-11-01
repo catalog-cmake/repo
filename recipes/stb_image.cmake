@@ -14,6 +14,9 @@ function(_recipe_stb_image_source)
     REPO https://github.com/nothings/stb.git
     REF master
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/stb_image.h")
     _catalog_log(FATAL_ERROR "stb_image: stb_image.h not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,8 @@ function(_recipe_stb_image_source)
 
   add_library(stb_image INTERFACE)
   target_include_directories(stb_image INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_stb_image_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/stb_image.h")
 endfunction()

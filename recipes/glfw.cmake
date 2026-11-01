@@ -18,8 +18,6 @@ function(_recipe_GLFW_system)
       endif()
     endif()
 
-    # glfw3's own CMake config exports a bare "glfw" target (not GLFW::GLFW),
-    # so the auto-alias candidates in catalog don't match - alias manually.
     if(TARGET glfw AND NOT TARGET deps::GLFW)
       add_library(deps::GLFW ALIAS glfw)
       return()
@@ -75,6 +73,7 @@ function(_recipe_GLFW_source)
       "GLFW_BUILD_TESTS" "OFF"
       "GLFW_BUILD_EXAMPLES" "OFF"
       "GLFW_INSTALL" "OFF"
+    INSTALL_OPTIONS "GLFW_INSTALL" "ON"
   )
 
   if(TARGET glfw AND NOT TARGET deps::GLFW)

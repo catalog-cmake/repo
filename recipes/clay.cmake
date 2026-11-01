@@ -20,6 +20,9 @@ function(_recipe_clay_source)
     DOWNLOAD_ONLY
     URL https://github.com/nicbarker/clay/archive/refs/tags/${CLAY_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/clay.h")
     _catalog_log(FATAL_ERROR "clay: clay.h not found under ${CL_SOURCE_DIR}")
@@ -36,4 +39,8 @@ function(_recipe_clay_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CLAY_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_clay_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/clay.h")
 endfunction()

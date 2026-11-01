@@ -72,11 +72,18 @@ function(_recipe_libcurl_source)
   endif()
 
   cl_repo_file(patches/libcurl.patch LIBCURL_PATCH)
+  set(LIBCURL_PATCHES "${LIBCURL_PATCH}")
+  if(CL_INSTALL_PREFIX)
+    foreach(LIBCURL_DEP zlib mbedtls c-ares brotli zstd nghttp2 libpsl libssh2)
+      cl_add_dep(${LIBCURL_DEP})
+    endforeach()
+    set(LIBCURL_PATCHES "")
+  endif()
 
   cl_import_source(
     NAME libcurl
     URL https://github.com/curl/curl/archive/refs/tags/${CURL_TAG}.tar.gz
-    PATCHES "${LIBCURL_PATCH}"
+    PATCHES ${LIBCURL_PATCHES}
     OPTIONS
       "BUILD_SHARED_LIBS" "${CURL_BUILD_SHARED}"
       "BUILD_CURL_EXE" "OFF"
@@ -86,6 +93,7 @@ function(_recipe_libcurl_source)
       "CURL_ENABLE_SSL" "ON"
       "CURL_USE_OPENSSL" "OFF"
       "CURL_USE_MBEDTLS" "ON"
+    INSTALL_OPTIONS "CURL_DISABLE_INSTALL" "OFF"
   )
 
   if(TARGET CURL::libcurl)

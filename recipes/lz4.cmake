@@ -37,6 +37,9 @@ function(_recipe_lz4_source)
     DOWNLOAD_ONLY
     URL https://github.com/lz4/lz4/archive/refs/tags/${LZ4_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/build/cmake/CMakeLists.txt")
     _catalog_log(FATAL_ERROR "lz4: expected build/cmake/CMakeLists.txt not found under ${CL_SOURCE_DIR}")
@@ -68,4 +71,22 @@ function(_recipe_lz4_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LZ4_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_lz4_install PREFIX)
+  set(LZ4_BUILD_SHARED ON)
+  set(LZ4_BUILD_STATIC ON)
+  if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
+    set(LZ4_BUILD_SHARED OFF)
+  elseif(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
+    set(LZ4_BUILD_STATIC OFF)
+  endif()
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(lz4 "${PREFIX}" FROM_SOURCE SUBDIR build/cmake
+    OPTIONS
+      "BUILD_SHARED_LIBS" "${LZ4_BUILD_SHARED}"
+      "BUILD_STATIC_LIBS" "${LZ4_BUILD_STATIC}"
+      "LZ4_BUILD_CLI" "OFF"
+  )
 endfunction()

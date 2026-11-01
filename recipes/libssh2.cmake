@@ -54,11 +54,16 @@ function(_recipe_libssh2_source)
   endif()
 
   cl_repo_file(patches/libssh2.patch LIBSSH2_PATCH)
+  set(LIBSSH2_PATCHES "${LIBSSH2_PATCH}")
+  if(CL_INSTALL_PREFIX)
+    cl_add_dep(openssl)
+    set(LIBSSH2_PATCHES "")
+  endif()
 
   cl_import_source(
     NAME libssh2
     URL https://github.com/libssh2/libssh2/archive/refs/tags/${LIBSSH2_TAG}.tar.gz
-    PATCHES "${LIBSSH2_PATCH}"
+    PATCHES ${LIBSSH2_PATCHES}
     OPTIONS
       "CRYPTO_BACKEND" "OpenSSL"
       "BUILD_SHARED_LIBS" "${LIBSSH2_BUILD_SHARED}"

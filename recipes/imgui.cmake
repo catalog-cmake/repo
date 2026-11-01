@@ -24,6 +24,9 @@ function(_recipe_imgui_source)
     DOWNLOAD_ONLY
     URL https://github.com/ocornut/imgui/archive/refs/tags/${IMGUI_TAG}.tar.gz
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/imgui.h")
     _catalog_log(FATAL_ERROR "imgui: imgui.h not found under ${CL_SOURCE_DIR}")
@@ -47,4 +50,10 @@ function(_recipe_imgui_latest)
   endif()
   string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
   cl_set_version("${RECIPE_VERSION}")
+endfunction()
+
+function(_recipe_imgui_install PREFIX)
+  cl_repo_file(install/project.cmake PROJECT_HELPER)
+  include("${PROJECT_HELPER}")
+  repo_install_project(imgui "${PREFIX}")
 endfunction()

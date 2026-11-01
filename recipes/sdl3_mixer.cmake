@@ -44,6 +44,7 @@ function(_recipe_SDL3_mixer_source)
     NAME SDL3_mixer
     URL https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/${SDL3MIXER_TAG}.tar.gz
     OPTIONS "SDLMIXER_VENDORED" "ON" "SDLMIXER_SAMPLES" "OFF"
+    INSTALL_OPTIONS "SDLMIXER_VENDORED" "OFF"
   )
 endfunction()
 

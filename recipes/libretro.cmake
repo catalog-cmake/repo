@@ -14,6 +14,9 @@ function(_recipe_libretro_source)
     REPO https://github.com/libretro/libretro-common.git
     REF master
   )
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/include/libretro.h")
     _catalog_log(FATAL_ERROR "libretro: include/libretro.h not found under ${CL_SOURCE_DIR}")
@@ -21,4 +24,8 @@ function(_recipe_libretro_source)
 
   add_library(libretro INTERFACE)
   target_include_directories(libretro INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}/include>)
+endfunction()
+
+function(_recipe_libretro_install PREFIX)
+  cl_install_files(DESTINATION include "${CL_SOURCE_DIR}/include/")
 endfunction()

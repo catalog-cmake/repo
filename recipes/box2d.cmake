@@ -55,6 +55,10 @@ function(_recipe_box2d_source)
       "BUILD_SHARED_LIBS" "${BOX2D_BUILD_SHARED}"
   )
 
+  if(CL_INSTALL_PREFIX)
+    return()
+  endif()
+
   if(TARGET box2d AND NOT TARGET box2d::box2d)
     add_library(box2d::box2d ALIAS box2d)
   endif()

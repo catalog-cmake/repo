@@ -54,6 +54,7 @@ function(_recipe_yaml-cpp_source)
       "YAML_CPP_BUILD_TOOLS" "OFF"
       "YAML_CPP_BUILD_CONTRIB" "OFF"
       "YAML_CPP_INSTALL" "OFF"
+    INSTALL_OPTIONS "YAML_CPP_INSTALL" "ON"
   )
 endfunction()
 
