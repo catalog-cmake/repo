@@ -29,6 +29,8 @@ function(_recipe_lz4_source)
   if(CL_REQ_VERSION)
     set(LZ4_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LZ4_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME lz4
@@ -57,4 +59,13 @@ function(_recipe_lz4_source)
   add_subdirectory("${CL_SOURCE_DIR}/build/cmake" "${CL_SOURCE_DIR}-build")
   set(BUILD_SHARED_LIBS "${_LZ4_PREV_SHARED}" CACHE BOOL "" FORCE)
   set(BUILD_STATIC_LIBS "${_LZ4_PREV_STATIC}" CACHE BOOL "" FORCE)
+endfunction()
+
+function(_recipe_lz4_latest)
+  set(LZ4_TAG "v1.10.0")
+  if(CL_REQ_VERSION)
+    set(LZ4_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LZ4_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

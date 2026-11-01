@@ -52,6 +52,7 @@ function(_recipe_openal_source)
   if(CL_REQ_VERSION)
     set(OPENAL_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${OPENAL_TAG}")
 
   cl_import_source(
     NAME openal
@@ -74,4 +75,12 @@ function(_recipe_openal_source)
   elseif(TARGET OpenAL AND NOT TARGET deps::openal)
     add_library(deps::openal ALIAS OpenAL)
   endif()
+endfunction()
+
+function(_recipe_openal_latest)
+  set(OPENAL_TAG "1.25.2")
+  if(CL_REQ_VERSION)
+    set(OPENAL_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${OPENAL_TAG}")
 endfunction()

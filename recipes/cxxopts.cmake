@@ -21,10 +21,21 @@ function(_recipe_cxxopts_source)
   if(CL_REQ_VERSION)
     set(CXXOPTS_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CXXOPTS_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME cxxopts
     URL https://github.com/jarro2783/cxxopts/archive/refs/tags/${CXXOPTS_TAG}.tar.gz
     OPTIONS "CXXOPTS_BUILD_EXAMPLES" "OFF" "CXXOPTS_BUILD_TESTS" "OFF"
   )
+endfunction()
+
+function(_recipe_cxxopts_latest)
+  set(CXXOPTS_TAG "v3.3.1")
+  if(CL_REQ_VERSION)
+    set(CXXOPTS_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CXXOPTS_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

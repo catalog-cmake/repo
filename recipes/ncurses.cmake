@@ -57,6 +57,7 @@ function(_recipe_ncurses_source)
   if(CL_REQ_VERSION)
     set(NCURSES_VER "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${NCURSES_VER}")
 
   cl_import_source(
     NAME ncurses
@@ -113,4 +114,12 @@ function(_recipe_ncurses_source)
     INTERFACE_INCLUDE_DIRECTORIES "${NCURSES_PREFIX}/include/ncursesw"
   )
   add_library(deps::ncurses ALIAS _ncurses_source)
+endfunction()
+
+function(_recipe_ncurses_latest)
+  set(NCURSES_VER "6.6")
+  if(CL_REQ_VERSION)
+    set(NCURSES_VER "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${NCURSES_VER}")
 endfunction()

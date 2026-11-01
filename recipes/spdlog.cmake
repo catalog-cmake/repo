@@ -35,6 +35,8 @@ function(_recipe_spdlog_source)
   if(CL_REQ_VERSION)
     set(SPDLOG_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SPDLOG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   set(SPDLOG_BUILD_SHARED OFF)
   if(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
@@ -46,4 +48,13 @@ function(_recipe_spdlog_source)
     URL https://github.com/gabime/spdlog/archive/refs/tags/${SPDLOG_TAG}.tar.gz
     OPTIONS "SPDLOG_BUILD_SHARED" "${SPDLOG_BUILD_SHARED}" "SPDLOG_BUILD_EXAMPLE" "OFF" "SPDLOG_BUILD_TESTS" "OFF"
   )
+endfunction()
+
+function(_recipe_spdlog_latest)
+  set(SPDLOG_TAG "v1.17.0")
+  if(CL_REQ_VERSION)
+    set(SPDLOG_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SPDLOG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

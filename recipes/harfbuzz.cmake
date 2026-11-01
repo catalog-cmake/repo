@@ -49,6 +49,7 @@ function(_recipe_harfbuzz_source)
   if(CL_REQ_VERSION)
     set(HARFBUZZ_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${HARFBUZZ_TAG}")
 
   cl_import_source(
     NAME harfbuzz
@@ -60,4 +61,12 @@ function(_recipe_harfbuzz_source)
       "HB_HAVE_GLIB" "OFF"
       "HB_HAVE_ICU" "OFF"
   )
+endfunction()
+
+function(_recipe_harfbuzz_latest)
+  set(HARFBUZZ_TAG "14.4.0")
+  if(CL_REQ_VERSION)
+    set(HARFBUZZ_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${HARFBUZZ_TAG}")
 endfunction()

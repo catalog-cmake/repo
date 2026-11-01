@@ -12,6 +12,8 @@ function(_recipe_plutosvg_source)
   if(CL_REQ_VERSION)
     set(PLUTOSVG_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${PLUTOSVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_repo_file(patches/plutosvg.patch PLUTOSVG_PATCH)
 
@@ -21,4 +23,13 @@ function(_recipe_plutosvg_source)
     OPTIONS "PLUTOSVG_BUILD_EXAMPLES" "OFF" "PLUTOSVG_ENABLE_FREETYPE" "OFF"
     PATCHES "${PLUTOSVG_PATCH}"
   )
+endfunction()
+
+function(_recipe_plutosvg_latest)
+  set(PLUTOSVG_TAG "v0.0.8")
+  if(CL_REQ_VERSION)
+    set(PLUTOSVG_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${PLUTOSVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

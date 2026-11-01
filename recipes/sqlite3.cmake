@@ -49,11 +49,21 @@ function(_recipe_sqlite3_package)
   endif()
 endfunction()
 
+function(_sqlite3_version OUT_VAR NUMBER)
+  string(REGEX REPLACE "^([0-9])([0-9][0-9])([0-9][0-9])[0-9][0-9]$" "\\1.\\2.\\3" VERSION "${NUMBER}")
+  string(REGEX REPLACE "\\.0([0-9])" ".\\1" VERSION "${VERSION}")
+  set(${OUT_VAR} "${VERSION}" PARENT_SCOPE)
+endfunction()
+
 function(_recipe_sqlite3_source)
+  set(SQLITE_NUMBER "3530400")
+  _sqlite3_version(RECIPE_VERSION "${SQLITE_NUMBER}")
+  cl_set_version("${RECIPE_VERSION}")
+
   cl_import_source(
     NAME sqlite3
     DOWNLOAD_ONLY
-    URL https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip
+    URL https://www.sqlite.org/2026/sqlite-amalgamation-${SQLITE_NUMBER}.zip
   )
 
   if(NOT EXISTS "${CL_SOURCE_DIR}/sqlite3.c")
@@ -75,4 +85,9 @@ function(_recipe_sqlite3_source)
       target_link_libraries(sqlite3 PRIVATE ${SQLITE3_DL_LIBRARY})
     endif()
   endif()
+endfunction()
+
+function(_recipe_sqlite3_latest)
+  _sqlite3_version(RECIPE_VERSION "3530400")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

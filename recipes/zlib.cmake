@@ -44,6 +44,8 @@ function(_recipe_zlib_source)
   if(CL_REQ_VERSION)
     set(ZLIB_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${ZLIB_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME zlib
@@ -66,4 +68,13 @@ function(_recipe_zlib_source)
       add_library(deps::zlib ALIAS ${_ZLIB_PICK})
     endif()
   endif()
+endfunction()
+
+function(_recipe_zlib_latest)
+  set(ZLIB_TAG "v1.3.2")
+  if(CL_REQ_VERSION)
+    set(ZLIB_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${ZLIB_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

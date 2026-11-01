@@ -39,6 +39,8 @@ function(_recipe_msgpack_source)
   if(CL_REQ_VERSION)
     set(MSGPACK_TAG "cpp-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^cpp-" "" RECIPE_VERSION "${MSGPACK_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME msgpack
@@ -49,4 +51,13 @@ function(_recipe_msgpack_source)
   if(TARGET msgpack-cxx)
     add_library(deps::msgpack ALIAS msgpack-cxx)
   endif()
+endfunction()
+
+function(_recipe_msgpack_latest)
+  set(MSGPACK_TAG "cpp-9.0.0")
+  if(CL_REQ_VERSION)
+    set(MSGPACK_TAG "cpp-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^cpp-" "" RECIPE_VERSION "${MSGPACK_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

@@ -37,6 +37,8 @@ function(_recipe_SDL3_image_source)
   if(CL_REQ_VERSION)
     set(SDL3IMAGE_TAG "release-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3IMAGE_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_add_dep(libwebp)
 
@@ -48,4 +50,13 @@ function(_recipe_SDL3_image_source)
     OPTIONS "SDLIMAGE_VENDORED" "OFF" "SDLIMAGE_SAMPLES" "OFF" "SDLIMAGE_TESTS" "OFF" "SDLIMAGE_DEPS_SHARED" "OFF"
     PATCHES "${SDL3IMAGE_PATCH}"
   )
+endfunction()
+
+function(_recipe_SDL3_image_latest)
+  set(SDL3IMAGE_TAG "release-3.4.4")
+  if(CL_REQ_VERSION)
+    set(SDL3IMAGE_TAG "release-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3IMAGE_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

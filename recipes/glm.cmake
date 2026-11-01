@@ -33,10 +33,19 @@ function(_recipe_glm_source)
   if(CL_REQ_VERSION)
     set(GLM_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${GLM_TAG}")
 
   cl_import_source(
     NAME glm
     URL https://github.com/g-truc/glm/archive/refs/tags/${GLM_TAG}.tar.gz
     OPTIONS "GLM_BUILD_TESTS" "OFF" "GLM_BUILD_INSTALL" "OFF"
   )
+endfunction()
+
+function(_recipe_glm_latest)
+  set(GLM_TAG "1.0.3")
+  if(CL_REQ_VERSION)
+    set(GLM_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${GLM_TAG}")
 endfunction()

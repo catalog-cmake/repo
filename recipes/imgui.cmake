@@ -16,6 +16,8 @@ function(_recipe_imgui_source)
   if(CL_REQ_VERSION)
     set(IMGUI_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME imgui
@@ -36,4 +38,13 @@ function(_recipe_imgui_source)
   target_include_directories(imgui PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
   target_compile_features(imgui PUBLIC cxx_std_11)
   set_target_properties(imgui PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endfunction()
+
+function(_recipe_imgui_latest)
+  set(IMGUI_TAG "v1.92.9")
+  if(CL_REQ_VERSION)
+    set(IMGUI_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

@@ -57,6 +57,7 @@ function(_recipe_lua_source)
   elseif(LUA_MAJMIN)
     set(LUA_VER "${LUA_MAJMIN}")
   endif()
+  cl_set_version("${LUA_VER}")
 
   cl_import_source(
     NAME lua
@@ -87,4 +88,16 @@ function(_recipe_lua_source)
       target_link_libraries(lua PRIVATE m)
     endif()
   endif()
+endfunction()
+
+function(_recipe_lua_latest)
+  _lua_requested_majmin(LUA_MAJMIN)
+
+  set(LUA_VER "5.4.8")
+  if(CL_REQ_VERSION)
+    set(LUA_VER "${CL_REQ_VERSION}")
+  elseif(LUA_MAJMIN)
+    set(LUA_VER "${LUA_MAJMIN}")
+  endif()
+  cl_set_version("${LUA_VER}")
 endfunction()

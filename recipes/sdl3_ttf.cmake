@@ -37,6 +37,8 @@ function(_recipe_SDL3_ttf_source)
   if(CL_REQ_VERSION)
     set(SDL3TTF_TAG "release-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3TTF_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
 	cl_add_dep(plutosvg)
 	cl_add_dep(freetype)
@@ -50,4 +52,13 @@ function(_recipe_SDL3_ttf_source)
 		OPTIONS "SDLTTF_HARFBUZZ_VENDORED" "OFF" "SDLTTF_FREETYPE_VENDORED" "OFF" "SDLTTF_PLUTOSVG_VENDORED" "OFF"
 		PATCHES "${SDL3TTF_PATCH}"
 	)
+endfunction()
+
+function(_recipe_SDL3_ttf_latest)
+  set(SDL3TTF_TAG "release-3.2.2")
+  if(CL_REQ_VERSION)
+    set(SDL3TTF_TAG "release-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3TTF_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

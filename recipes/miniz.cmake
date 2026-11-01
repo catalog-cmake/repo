@@ -19,6 +19,7 @@ function(_recipe_miniz_source)
   if(CL_REQ_VERSION)
     set(MINIZ_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${MINIZ_TAG}")
 
   set(MINIZ_BUILD_SHARED OFF)
   if(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
@@ -30,4 +31,12 @@ function(_recipe_miniz_source)
     URL https://github.com/richgel999/miniz/archive/refs/tags/${MINIZ_TAG}.tar.gz
     OPTIONS "BUILD_SHARED_LIBS" "${MINIZ_BUILD_SHARED}" "BUILD_EXAMPLES" "OFF" "BUILD_TESTS" "OFF" "BUILD_FUZZERS" "OFF"
   )
+endfunction()
+
+function(_recipe_miniz_latest)
+  set(MINIZ_TAG "3.1.1")
+  if(CL_REQ_VERSION)
+    set(MINIZ_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${MINIZ_TAG}")
 endfunction()

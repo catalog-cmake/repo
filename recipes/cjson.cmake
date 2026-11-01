@@ -37,6 +37,8 @@ function(_recipe_cjson_source)
   if(CL_REQ_VERSION)
     set(CJSON_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CJSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME cjson
@@ -47,4 +49,13 @@ function(_recipe_cjson_source)
       "ENABLE_CJSON_UTILS" "OFF"
       "ENABLE_TARGET_EXPORT" "OFF"
   )
+endfunction()
+
+function(_recipe_cjson_latest)
+  set(CJSON_TAG "v1.7.19")
+  if(CL_REQ_VERSION)
+    set(CJSON_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CJSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

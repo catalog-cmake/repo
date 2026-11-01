@@ -22,6 +22,7 @@ function(_recipe_lyra_source)
   if(CL_REQ_VERSION)
     set(LYRA_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${LYRA_TAG}")
 
   cl_import_source(
     NAME lyra
@@ -31,4 +32,12 @@ function(_recipe_lyra_source)
 
   add_library(lyra INTERFACE)
   target_include_directories(lyra INTERFACE ${CL_SOURCE_DIR}/include)
+endfunction()
+
+function(_recipe_lyra_latest)
+  set(LYRA_TAG "1.8.0")
+  if(CL_REQ_VERSION)
+    set(LYRA_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${LYRA_TAG}")
 endfunction()

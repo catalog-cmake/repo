@@ -21,6 +21,8 @@ function(_recipe_maxmod_source)
   if(CL_REQ_VERSION)
     set(MAXMOD_TAG "v${CL_REQ_VERSION}-blocks")
   endif()
+  string(REGEX REPLACE "^v|-blocks$" "" RECIPE_VERSION "${MAXMOD_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME maxmod
@@ -40,4 +42,13 @@ function(_recipe_maxmod_source)
 
   add_library(maxmod STATIC ${MAXMOD_SOURCES})
   target_include_directories(maxmod PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}/include>)
+endfunction()
+
+function(_recipe_maxmod_latest)
+  set(MAXMOD_TAG "v1.23.0-blocks")
+  if(CL_REQ_VERSION)
+    set(MAXMOD_TAG "v${CL_REQ_VERSION}-blocks")
+  endif()
+  string(REGEX REPLACE "^v|-blocks$" "" RECIPE_VERSION "${MAXMOD_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

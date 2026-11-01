@@ -32,6 +32,7 @@ function(_recipe_websocketpp_source)
   if(CL_REQ_VERSION)
     set(WSPP_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${WSPP_TAG}")
 
   cl_import_source(
     NAME websocketpp
@@ -43,4 +44,12 @@ function(_recipe_websocketpp_source)
   add_library(websocketpp INTERFACE)
   target_include_directories(websocketpp INTERFACE "${WSPP_SRC_DIR}")
   add_library(deps::websocketpp ALIAS websocketpp)
+endfunction()
+
+function(_recipe_websocketpp_latest)
+  set(WSPP_TAG "0.8.2")
+  if(CL_REQ_VERSION)
+    set(WSPP_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${WSPP_TAG}")
 endfunction()

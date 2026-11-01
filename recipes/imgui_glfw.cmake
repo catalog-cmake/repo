@@ -6,6 +6,8 @@ function(_recipe_imgui_glfw_source)
   if(CL_REQ_VERSION)
     set(IMGUI_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME imgui_glfw
@@ -29,4 +31,13 @@ function(_recipe_imgui_glfw_source)
   if(UNIX AND NOT APPLE)
     target_link_libraries(imgui_glfw PRIVATE dl)
   endif()
+endfunction()
+
+function(_recipe_imgui_glfw_latest)
+  set(IMGUI_TAG "v1.92.9")
+  if(CL_REQ_VERSION)
+    set(IMGUI_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${IMGUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

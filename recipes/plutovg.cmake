@@ -11,10 +11,21 @@ function(_recipe_plutovg_source)
   if(CL_REQ_VERSION)
     set(PLUTOVG_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${PLUTOVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME plutovg
     URL https://github.com/sammycage/plutovg/archive/refs/tags/${PLUTOVG_TAG}.tar.gz
     OPTIONS "PLUTOVG_BUILD_EXAMPLES" "OFF"
   )
+endfunction()
+
+function(_recipe_plutovg_latest)
+  set(PLUTOVG_TAG "v1.3.3")
+  if(CL_REQ_VERSION)
+    set(PLUTOVG_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${PLUTOVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

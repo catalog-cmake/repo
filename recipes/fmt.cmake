@@ -37,6 +37,7 @@ function(_recipe_fmt_source)
   if(CL_REQ_VERSION)
     set(FMT_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${FMT_TAG}")
 
   set(FMT_BUILD_SHARED OFF)
   if(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
@@ -48,4 +49,12 @@ function(_recipe_fmt_source)
     URL https://github.com/fmtlib/fmt/archive/refs/tags/${FMT_TAG}.tar.gz
     OPTIONS "BUILD_SHARED_LIBS" "${FMT_BUILD_SHARED}" "FMT_TEST" "OFF" "FMT_DOC" "OFF"
   )
+endfunction()
+
+function(_recipe_fmt_latest)
+  set(FMT_TAG "12.2.0")
+  if(CL_REQ_VERSION)
+    set(FMT_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${FMT_TAG}")
 endfunction()

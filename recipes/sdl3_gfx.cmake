@@ -17,6 +17,8 @@ function(_recipe_SDL3_gfx_source)
   if(CL_REQ_VERSION)
     set(SDL3GFX_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SDL3GFX_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME SDL3_gfx
@@ -36,4 +38,13 @@ function(_recipe_SDL3_gfx_source)
   )
   target_include_directories(SDL3_gfx PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
   target_link_libraries(SDL3_gfx PUBLIC deps::SDL3)
+endfunction()
+
+function(_recipe_SDL3_gfx_latest)
+  set(SDL3GFX_TAG "v1.0.1")
+  if(CL_REQ_VERSION)
+    set(SDL3GFX_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SDL3GFX_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

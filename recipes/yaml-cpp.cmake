@@ -37,6 +37,8 @@ function(_recipe_yaml-cpp_source)
   if(CL_REQ_VERSION)
     set(YAMLCPP_TAG "yaml-cpp-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^yaml-cpp-" "" RECIPE_VERSION "${YAMLCPP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   set(YAMLCPP_BUILD_SHARED ON)
   if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
@@ -53,4 +55,13 @@ function(_recipe_yaml-cpp_source)
       "YAML_CPP_BUILD_CONTRIB" "OFF"
       "YAML_CPP_INSTALL" "OFF"
   )
+endfunction()
+
+function(_recipe_yaml-cpp_latest)
+  set(YAMLCPP_TAG "yaml-cpp-0.9.0")
+  if(CL_REQ_VERSION)
+    set(YAMLCPP_TAG "yaml-cpp-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^yaml-cpp-" "" RECIPE_VERSION "${YAMLCPP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

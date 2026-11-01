@@ -29,10 +29,21 @@ function(_recipe_xbyak_source)
   if(CL_REQ_VERSION)
     set(XBYAK_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${XBYAK_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME xbyak
     URL https://github.com/herumi/xbyak/archive/refs/tags/${XBYAK_TAG}.tar.gz
     OPTIONS "XBYAK_TEST" "OFF"
   )
+endfunction()
+
+function(_recipe_xbyak_latest)
+  set(XBYAK_TAG "v7.44")
+  if(CL_REQ_VERSION)
+    set(XBYAK_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${XBYAK_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

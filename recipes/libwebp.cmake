@@ -41,6 +41,8 @@ function(_recipe_libwebp_source)
   if(CL_REQ_VERSION)
     set(LIBWEBP_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LIBWEBP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME libwebp
@@ -60,4 +62,13 @@ function(_recipe_libwebp_source)
   if(TARGET webp)
     add_library(deps::libwebp ALIAS webp)
   endif()
+endfunction()
+
+function(_recipe_libwebp_latest)
+  set(LIBWEBP_TAG "v1.6.0")
+  if(CL_REQ_VERSION)
+    set(LIBWEBP_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LIBWEBP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

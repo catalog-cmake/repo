@@ -12,10 +12,21 @@ function(_recipe_lunasvg_source)
   if(CL_REQ_VERSION)
     set(LUNASVG_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LUNASVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME lunasvg
     URL https://github.com/sammycage/lunasvg/archive/refs/tags/${LUNASVG_TAG}.tar.gz
     OPTIONS "LUNASVG_BUILD_EXAMPLES" "OFF" "plutovg_FOUND" "TRUE"
   )
+endfunction()
+
+function(_recipe_lunasvg_latest)
+  set(LUNASVG_TAG "v3.5.0")
+  if(CL_REQ_VERSION)
+    set(LUNASVG_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${LUNASVG_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

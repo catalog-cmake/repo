@@ -27,6 +27,8 @@ function(_recipe_simdjson_source)
   if(CL_REQ_VERSION)
     set(SIMDJSON_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SIMDJSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   set(SIMDJSON_BUILD_SHARED OFF)
   if(CL_REQ_TYPE STREQUAL "SHARED" OR CL_REQ_TYPE STREQUAL "PREFER_SHARED")
@@ -41,4 +43,13 @@ function(_recipe_simdjson_source)
       "SIMDJSON_DEVELOPER_MODE" "OFF"
       "SIMDJSON_INSTALL" "OFF"
   )
+endfunction()
+
+function(_recipe_simdjson_latest)
+  set(SIMDJSON_TAG "v4.6.10")
+  if(CL_REQ_VERSION)
+    set(SIMDJSON_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${SIMDJSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

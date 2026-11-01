@@ -57,6 +57,8 @@ function(_recipe_SDL2_image_source)
   if(CL_REQ_VERSION)
     set(SDL2IMAGE_TAG "release-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL2IMAGE_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_add_dep(libwebp)
 
@@ -68,4 +70,13 @@ function(_recipe_SDL2_image_source)
     OPTIONS "SDL2IMAGE_VENDORED" "OFF" "SDL2IMAGE_SAMPLES" "OFF" "SDL2IMAGE_TESTS" "OFF" "SDL2IMAGE_DEPS_SHARED" "OFF"
     PATCHES "${SDL2IMAGE_PATCH}"
   )
+endfunction()
+
+function(_recipe_SDL2_image_latest)
+  set(SDL2IMAGE_TAG "release-2.8.12")
+  if(CL_REQ_VERSION)
+    set(SDL2IMAGE_TAG "release-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL2IMAGE_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

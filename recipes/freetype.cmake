@@ -54,6 +54,9 @@ function(_recipe_freetype_source)
     string(REPLACE "." "-" FT_TAG_VER "${CL_REQ_VERSION}")
     set(FREETYPE_TAG "VER-${FT_TAG_VER}")
   endif()
+  string(REGEX REPLACE "^VER-" "" RECIPE_VERSION "${FREETYPE_TAG}")
+  string(REPLACE "-" "." RECIPE_VERSION "${RECIPE_VERSION}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME freetype
@@ -65,4 +68,15 @@ function(_recipe_freetype_source)
       "FT_DISABLE_HARFBUZZ" "ON"
       "FT_DISABLE_BROTLI" "ON"
   )
+endfunction()
+
+function(_recipe_freetype_latest)
+  set(FREETYPE_TAG "VER-2-14-3")
+  if(CL_REQ_VERSION)
+    string(REPLACE "." "-" FT_TAG_VER "${CL_REQ_VERSION}")
+    set(FREETYPE_TAG "VER-${FT_TAG_VER}")
+  endif()
+  string(REGEX REPLACE "^VER-" "" RECIPE_VERSION "${FREETYPE_TAG}")
+  string(REPLACE "-" "." RECIPE_VERSION "${RECIPE_VERSION}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

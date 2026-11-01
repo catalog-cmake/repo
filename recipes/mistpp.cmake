@@ -23,6 +23,8 @@ function(_recipe_mistpp_source)
   if(CL_REQ_VERSION)
     set(MISTPP_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${MISTPP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME mistpp
@@ -33,4 +35,13 @@ function(_recipe_mistpp_source)
   if(TARGET "mist++")
     add_library(deps::mistpp ALIAS "mist++")
   endif()
+endfunction()
+
+function(_recipe_mistpp_latest)
+  set(MISTPP_TAG "v0.3.6")
+  if(CL_REQ_VERSION)
+    set(MISTPP_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${MISTPP_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

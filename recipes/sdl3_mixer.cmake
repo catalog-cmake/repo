@@ -37,10 +37,21 @@ function(_recipe_SDL3_mixer_source)
   if(CL_REQ_VERSION)
     set(SDL3MIXER_TAG "release-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3MIXER_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME SDL3_mixer
     URL https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/${SDL3MIXER_TAG}.tar.gz
     OPTIONS "SDLMIXER_VENDORED" "ON" "SDLMIXER_SAMPLES" "OFF"
   )
+endfunction()
+
+function(_recipe_SDL3_mixer_latest)
+  set(SDL3MIXER_TAG "release-3.2.2")
+  if(CL_REQ_VERSION)
+    set(SDL3MIXER_TAG "release-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL3MIXER_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

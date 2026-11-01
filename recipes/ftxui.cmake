@@ -7,6 +7,8 @@ function(_recipe_ftxui_source)
   if(CL_REQ_VERSION)
     set(FTXUI_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${FTXUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME ftxui
@@ -17,4 +19,13 @@ function(_recipe_ftxui_source)
       "FTXUI_BUILD_TESTS" "OFF"
       "FTXUI_ENABLE_INSTALL" "OFF"
   )
+endfunction()
+
+function(_recipe_ftxui_latest)
+  set(FTXUI_TAG "v7.0.3")
+  if(CL_REQ_VERSION)
+    set(FTXUI_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${FTXUI_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

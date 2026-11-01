@@ -42,6 +42,8 @@ function(_recipe_GLEW_source)
   if(CL_REQ_VERSION)
     set(GLEW_TAG "glew-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^glew-" "" RECIPE_VERSION "${GLEW_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME GLEW
@@ -64,4 +66,13 @@ function(_recipe_GLEW_source)
   elseif(TARGET glew_s)
     add_library(deps::GLEW ALIAS glew_s)
   endif()
+endfunction()
+
+function(_recipe_GLEW_latest)
+  set(GLEW_TAG "glew-2.3.1")
+  if(CL_REQ_VERSION)
+    set(GLEW_TAG "glew-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^glew-" "" RECIPE_VERSION "${GLEW_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

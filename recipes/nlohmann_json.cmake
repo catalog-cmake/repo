@@ -19,10 +19,21 @@ function(_recipe_nlohmann_json_source)
   if(CL_REQ_VERSION)
     set(NLOHMANN_JSON_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${NLOHMANN_JSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME nlohmann_json
     URL https://github.com/nlohmann/json/archive/refs/tags/${NLOHMANN_JSON_TAG}.tar.gz
     OPTIONS "JSON_BuildTests" "OFF" "JSON_Install" "OFF"
   )
+endfunction()
+
+function(_recipe_nlohmann_json_latest)
+  set(NLOHMANN_JSON_TAG "v3.12.0")
+  if(CL_REQ_VERSION)
+    set(NLOHMANN_JSON_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${NLOHMANN_JSON_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

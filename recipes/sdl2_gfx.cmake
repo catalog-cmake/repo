@@ -29,6 +29,7 @@ function(_recipe_SDL2_gfx_source)
   if(CL_REQ_VERSION)
     set(SDL2GFX_VER "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${SDL2GFX_VER}")
 
   cl_import_source(
     NAME SDL2_gfx
@@ -48,4 +49,12 @@ function(_recipe_SDL2_gfx_source)
   )
   target_include_directories(SDL2_gfx PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
   target_link_libraries(SDL2_gfx PUBLIC deps::SDL2)
+endfunction()
+
+function(_recipe_SDL2_gfx_latest)
+  set(SDL2GFX_VER "1.0.4")
+  if(CL_REQ_VERSION)
+    set(SDL2GFX_VER "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${SDL2GFX_VER}")
 endfunction()

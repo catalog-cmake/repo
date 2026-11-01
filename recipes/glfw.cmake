@@ -64,6 +64,7 @@ function(_recipe_GLFW_source)
   if(CL_REQ_VERSION)
     set(GLFW_TAG "${CL_REQ_VERSION}")
   endif()
+  cl_set_version("${GLFW_TAG}")
 
   cl_import_source(
     NAME GLFW
@@ -79,4 +80,12 @@ function(_recipe_GLFW_source)
   if(TARGET glfw AND NOT TARGET deps::GLFW)
     add_library(deps::GLFW ALIAS glfw)
   endif()
+endfunction()
+
+function(_recipe_GLFW_latest)
+  set(GLFW_TAG "3.5.1")
+  if(CL_REQ_VERSION)
+    set(GLFW_TAG "${CL_REQ_VERSION}")
+  endif()
+  cl_set_version("${GLFW_TAG}")
 endfunction()

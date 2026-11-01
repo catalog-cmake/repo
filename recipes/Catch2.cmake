@@ -31,10 +31,21 @@ function(_recipe_Catch2_source)
   if(CL_REQ_VERSION)
     set(CATCH2_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CATCH2_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME Catch2
     URL https://github.com/catchorg/Catch2/archive/refs/tags/${CATCH2_TAG}.tar.gz
     OPTIONS "CATCH_INSTALL_DOCS" "OFF" "CATCH_INSTALL_EXTRAS" "OFF"
   )
+endfunction()
+
+function(_recipe_Catch2_latest)
+  set(CATCH2_TAG "v3.16.0")
+  if(CL_REQ_VERSION)
+    set(CATCH2_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CATCH2_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

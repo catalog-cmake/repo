@@ -45,6 +45,8 @@ function(_recipe_Boost_source)
   if(CL_REQ_VERSION)
     set(BOOST_REF "boost-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^boost-" "" RECIPE_VERSION "${BOOST_REF}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME Boost
@@ -83,4 +85,13 @@ function(_recipe_Boost_source)
       add_library(deps::Boost ALIAS ${_BOOST_PICK})
     endif()
   endif()
+endfunction()
+
+function(_recipe_Boost_latest)
+  set(BOOST_REF "boost-1.92.0")
+  if(CL_REQ_VERSION)
+    set(BOOST_REF "boost-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^boost-" "" RECIPE_VERSION "${BOOST_REF}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

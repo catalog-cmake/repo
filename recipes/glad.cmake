@@ -3,6 +3,8 @@ function(_recipe_glad_source)
   if(CL_REQ_VERSION)
     set(GLAD_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${GLAD_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME glad
@@ -27,4 +29,13 @@ function(_recipe_glad_source)
   if(TARGET glad)
     add_library(deps::GLAD ALIAS glad)
   endif()
+endfunction()
+
+function(_recipe_glad_latest)
+  set(GLAD_TAG "v2.0.8")
+  if(CL_REQ_VERSION)
+    set(GLAD_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${GLAD_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

@@ -21,10 +21,21 @@ function(_recipe_CLI11_source)
   if(CL_REQ_VERSION)
     set(CLI11_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CLI11_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME CLI11
     URL https://github.com/CLIUtils/CLI11/archive/refs/tags/${CLI11_TAG}.tar.gz
     OPTIONS "CLI11_BUILD_TESTS" "OFF" "CLI11_BUILD_EXAMPLES" "OFF" "CLI11_BUILD_DOCS" "OFF"
   )
+endfunction()
+
+function(_recipe_CLI11_latest)
+  set(CLI11_TAG "v2.7.2")
+  if(CL_REQ_VERSION)
+    set(CLI11_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CLI11_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

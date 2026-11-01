@@ -56,6 +56,8 @@ function(_recipe_openssl_source)
   if(CL_REQ_VERSION)
     set(OPENSSL_TAG "openssl-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^openssl-" "" RECIPE_VERSION "${OPENSSL_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME openssl
@@ -113,4 +115,13 @@ function(_recipe_openssl_source)
   add_library(_deps_openssl_combined INTERFACE)
   target_link_libraries(_deps_openssl_combined INTERFACE OpenSSL::SSL OpenSSL::Crypto)
   add_library(deps::openssl ALIAS _deps_openssl_combined)
+endfunction()
+
+function(_recipe_openssl_latest)
+  set(OPENSSL_TAG "openssl-3.6.4")
+  if(CL_REQ_VERSION)
+    set(OPENSSL_TAG "openssl-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^openssl-" "" RECIPE_VERSION "${OPENSSL_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

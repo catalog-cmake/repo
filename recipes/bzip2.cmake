@@ -45,6 +45,8 @@ function(_recipe_bzip2_source)
   if(CL_REQ_VERSION)
     set(BZIP2_TAG "bzip2-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^bzip2-" "" RECIPE_VERSION "${BZIP2_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME bzip2
@@ -67,4 +69,13 @@ function(_recipe_bzip2_source)
   )
   target_include_directories(bzip2 PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
   target_compile_definitions(bzip2 PRIVATE _FILE_OFFSET_BITS=64)
+endfunction()
+
+function(_recipe_bzip2_latest)
+  set(BZIP2_TAG "bzip2-1.0.8")
+  if(CL_REQ_VERSION)
+    set(BZIP2_TAG "bzip2-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^bzip2-" "" RECIPE_VERSION "${BZIP2_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

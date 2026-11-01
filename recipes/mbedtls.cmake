@@ -44,6 +44,8 @@ function(_recipe_mbedtls_source)
   if(CL_REQ_VERSION)
     set(MBEDTLS_REF "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${MBEDTLS_REF}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME mbedtls
@@ -78,4 +80,13 @@ function(_recipe_mbedtls_source)
       add_library(deps::mbedtls ALIAS MbedTLS::mbedtls)
     endif()
   endif()
+endfunction()
+
+function(_recipe_mbedtls_latest)
+  set(MBEDTLS_REF "v4.2.0")
+  if(CL_REQ_VERSION)
+    set(MBEDTLS_REF "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${MBEDTLS_REF}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

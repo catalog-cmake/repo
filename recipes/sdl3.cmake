@@ -68,10 +68,21 @@ function(_recipe_SDL3_source)
   if(CL_REQ_VERSION)
     set(SDL_TAG "release-${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME SDL3
     URL https://github.com/libsdl-org/SDL/archive/refs/tags/${SDL_TAG}.tar.gz
     OPTIONS "SDL_SHARED" "${SDL_BUILD_SHARED}" "SDL_STATIC" "${SDL_BUILD_STATIC}" "SDL_TEST_LIBRARY" "OFF"
   )
+endfunction()
+
+function(_recipe_SDL3_latest)
+  set(SDL_TAG "release-3.4.14")
+  if(CL_REQ_VERSION)
+    set(SDL_TAG "release-${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^release-" "" RECIPE_VERSION "${SDL_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()

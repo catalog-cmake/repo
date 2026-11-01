@@ -12,6 +12,8 @@ function(_recipe_clay_source)
   if(CL_REQ_VERSION)
     set(CLAY_TAG "v${CL_REQ_VERSION}")
   endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CLAY_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 
   cl_import_source(
     NAME clay
@@ -25,4 +27,13 @@ function(_recipe_clay_source)
 
   add_library(clay INTERFACE)
   target_include_directories(clay INTERFACE $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
+endfunction()
+
+function(_recipe_clay_latest)
+  set(CLAY_TAG "v0.14")
+  if(CL_REQ_VERSION)
+    set(CLAY_TAG "v${CL_REQ_VERSION}")
+  endif()
+  string(REGEX REPLACE "^v" "" RECIPE_VERSION "${CLAY_TAG}")
+  cl_set_version("${RECIPE_VERSION}")
 endfunction()
