@@ -60,6 +60,12 @@ function(_recipe_GLEW_source)
 
   add_subdirectory("${CL_SOURCE_DIR}/build/cmake" "${CL_SOURCE_DIR}-build")
 
+  foreach(_glew_tgt glew glew_s)
+    if(TARGET ${_glew_tgt})
+      target_include_directories(${_glew_tgt} PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}/include>)
+    endif()
+  endforeach()
+
   if(CL_REQ_TYPE STREQUAL "STATIC" OR CL_REQ_TYPE STREQUAL "PREFER_STATIC")
     if(TARGET glew_s)
       add_library(deps::GLEW ALIAS glew_s)
