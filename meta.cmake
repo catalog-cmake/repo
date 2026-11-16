@@ -83,6 +83,7 @@ set(CATALOG_RECIPES
   libarchive:recipes/libarchive.cmake
 
   openssl:recipes/openssl.cmake
+  monocypher:recipes/monocypher.cmake
   mbedtls:recipes/mbedtls.cmake
   openssh:recipes/openssh.cmake
 
@@ -209,6 +210,7 @@ set(CATALOG_DESCRIPTIONS
   "xz:XZ Utils, LZMA compression (liblzma)"
   "libarchive:Multi-format archive and compression library"
   "openssl:TLS and cryptography toolkit"
+  "monocypher:Small, fast cryptography library (Ed25519, X25519, ChaCha20, BLAKE2b)"
   "mbedtls:Small TLS and cryptography library"
   "openssh:OpenSSH client and server"
   "sqlite3:Embedded SQL database engine"
