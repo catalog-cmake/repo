@@ -14,6 +14,7 @@ function(_recipe___getexecname_source)
   endif()
 
   add_library(__getexecname STATIC "${CL_SOURCE_DIR}/__getbasepath/internal.cpp")
+  set_target_properties(__getexecname PROPERTIES PREFIX "lib" OUTPUT_NAME "basepath")
   target_include_directories(__getexecname PUBLIC $<BUILD_INTERFACE:${CL_SOURCE_DIR}>)
 
   if(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
